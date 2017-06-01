@@ -39,7 +39,7 @@ class Product(models.Model):
     name = models.CharField(max_length=30)
 
     price = models.DecimalField(max_digits=6, decimal_places=2, default=0.00)
-
+    image = models.CharField(max_length=1000, default="/static/catalog/images/Placeholder.jpg")
     stockXL = models.IntegerField(default=0)
     stockL = models.IntegerField(default=0)
     stockM = models.IntegerField(default=0)
