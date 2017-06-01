@@ -1,0 +1,21 @@
+{% extends 'catalog/base.html'%}
+
+
+{% block body %}
+<div class="container">
+
+    <div class="jumbotron">
+        <h1>NEXT AMAZON</h1>
+        <p><a class="btn btn-primary btn-lg" href="{% url 'catalog:about' %}" role="button">Learn More</a></p>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+          <a href="{% url 'catalog:mw' selection='m'%}"><img src="/static/catalog/images/shop_mens.jpg" style='height: 100%; width: 100%; object-fit: contain'></a>
+        </div>
+        <div class="col-md-6">
+          <a href="{% url 'catalog:mw' selection='w'%}"><img src="/static/catalog/images/shop_womens.jpg" style='height: 100%; width: 100%; object-fit: contain'></a>
+        </div>
+    </div>
+</div>
+{% endblock %}

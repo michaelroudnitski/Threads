@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Website{% endblock %}</title>
+    {% load staticfiles %}
+    <link rel = "stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="{% static 'catalog/style.css' %}"/>
+    <script src = "http://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+	<script src = "http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-default">
+        <div class="container">
+            <!--header-->
+            <div class = "navbar-header">
+                <a class="navbar-brand" href="{% url 'catalog:index'%}">
+                    <img alt="Brand" src="/static/catalog/images/logo.jpg" style="width:50px;">
+                </a>
+                <button type = "button" class = "navbar-toggle" data-toggle= "collapse" data-target="#topNavBar">
+                    <span class = 'icon-bar'></span>
+                    <span class = 'icon-bar'></span>
+                    <span class = 'icon-bar'></span>
+                </button>
+            </div>
+
+            <!--items-->
+            <div class="collapse navbar-collapse" id="topNavBar">
+                <ul class="nav navbar-nav">
+                    <li class="dropdown">
+                        <a href="{% url 'catalog:mw' selection='m'%}" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">MEN<span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            {% for cata in mcata %}
+                            <li><a href="{% url 'catalog:products_list' selection='m' category=cata.name %}"> {{cata.name}} </a></li>
+                            {% endfor %}
+                        </ul>
+                    </li>
+
+                    <li class="dropdown">
+                        <a href="{% url 'catalog:mw' selection='w'%}" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                            WOMEN<span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            {% for cata in wcata %}
+                            <li><a href="{% url 'catalog:products_list' selection='w' category=cata.name %}">{{ cata.name }} </a></li>
+                            {% endfor %}
+                        </ul>
+                    </li>
+
+                </ul>
+
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="{% url 'account:index' %}">
+                        <span class="glyphicon glyphicon-user" aria-hidden="true" ></span>
+                    </a></li>
+                </ul>
+
+                <form class="navbar-form navbar-right" role="search" action="{% url 'catalog:search' %}" method="GET" value="{{ request.GET.get }}">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="search..." name="q" >
+                        <span class="input-group-btn">
+                            <button class="btn btn-default" type="submit" >
+                                    <span class="glyphicon glyphicon-search" aria-hidden="true" ></span>
+                                </button>
+                            </span>
+                        </div>
+                </form>
+            </div>
+        </div>
+    </nav>
+    <!-- End of Navbar -->
+{% block body %}
+{% endblock %}
+
+</body>
+
+<nav class="navbar navbar-default navbar-fixed-bottom">
+    <div class="container">
+        <br>
+        <p><a href="{% url 'catalog:about' %}">About us</a></p>
+    </div>
+</nav>
+
+</html>

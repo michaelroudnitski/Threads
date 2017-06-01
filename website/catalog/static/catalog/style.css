@@ -1,0 +1,48 @@
+.navbar-default .navbar-nav>li>a {
+    color: #222;
+}
+
+.navbar-default .navbar-brand {
+    color: #222;
+}
+
+.thumbnail {
+    border:0px;
+}
+
+.thumbnail a>img, .thumbnail>img{
+    padding-top: 20px;
+}
+
+.list-group-item{
+    border: 2px;
+}
+
+a:hover {
+    text-decoration: none;
+}
+
+.table>tr>td{
+    vertical-align: middle;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+    width: auto;
+}
+
+.footer {
+    padding: 16px 0px;
+    border-top: 1px solid #e7e7e7;
+}
+
+body{
+    background-image: url('/static/catalog/images/subtle_dots.png');
+    background-repeat: repeat-y repeat-x;
+    padding-bottom: 100px;
+}
+
+.navbar-brand>img{
+    width: 55px;
+}

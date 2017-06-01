@@ -1,0 +1,13 @@
+{% extends 'catalog/base.html'%}
+
+{% block body %}
+<div class="container">
+    <div class="page-header"><h1>Login</h1></div>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button class="btn btn-default" type="submit">Login</button>
+    <a href="{% url 'account:register' %} "><button class="btn btn-default" type="button" >Register</button></a>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,39 @@
+{% extends 'catalog/base.html'%}
+{% block title %}{{ selected }}: Categories{% endblock %}
+
+
+{% block body %}
+<div class="container">
+    <div class="page-header">
+        <h1>{{ selected }}</h1>
+    </div>
+    <h3>Categories</h1>
+    <div class="row">
+        <div class="col-md-3">
+            <div class="list-group">
+                {% for cat in cata %}
+                    <a href="{% url 'catalog:products_list' selection=selection category=cat.name %}" class="list-group-item">
+                        <span class="badge">{{ cat.product_set.count }}</span>
+                        {{ cat.name }}
+                    </a>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="col-md-9">
+            <div class="row">
+                {% for product in products %}
+                    <div class="col-md-4">
+                        <div class="thumbnail">
+                            <a href="{% url 'catalog:prod' p_id=product.id %}"><img src="/static/catalog/images/Placeholder.jpg"></a>
+                                <div class="caption" style="margin: auto;">
+                                    <a href="{% url 'catalog:prod' p_id=product.id %}"><h3 style="text-align: center;">{{ product.name }}</h3></a>
+                                    <p style="text-align: center;">$ {{ product.price }}</p>
+                                </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
