@@ -3,9 +3,13 @@
 
 
 {% block body %}
-    {{product.name}}
-    {{product.stockXL}}
-    {{product.stockL}}
-    {{product.stockM}}
-    {{product.stockS}}
+    <div class="container">
+        <div class="page-header">
+            <h4>{{product.name}}</h4>
+        </div>
+        Extra Large: {{product.stockXL}}<br>
+        Large: {{product.stockL}}<br>
+        Medium: {{product.stockM}}<br>
+        Small: {{product.stockS}}<br>
+    </div>
 {% endblock %}
