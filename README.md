@@ -1,2 +1,4 @@
 # Threads
-Our grade 12 django group project!
+Our grade 12 group project!
+
+A website made using Django
