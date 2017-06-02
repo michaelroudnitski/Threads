@@ -6,6 +6,7 @@ import operator
 import re
 from django.db.models import Q
 from .models import Sex, Category, Product
+import math
 
 mcata = Sex.objects.get(sex_selection='m').category_set.all()
 wcata = Sex.objects.get(sex_selection='w').category_set.all()
@@ -88,13 +89,11 @@ def search(request, sex='mw', category='all_products', size='all_size', page=1):
     if request.method == 'GET':  # If the form is submitted
         queryset_list = Product.objects.all()
         new_queryset_list = []
-        # If search query is not empty
-
-        if search_query:
-            if str(search_query) not in "1234567890":
+        if search_query: # If search query is not empty
+            if str(search_query) not in "1234567890": # If the search query is not entirely composed of integers
                 keywords = re.split(' ,-', search_query)
 
-                if sex != 'mw':
+                if sex != 'mw': # if field is not default
                     queryset_list = queryset_list.filter(category__sex__sex_selection=sex)
 
                 elif category != 'all_products':
@@ -113,38 +112,36 @@ def search(request, sex='mw', category='all_products', size='all_size', page=1):
                            (Q(category__name__icontains=keyword) for keyword in keywords))
                 )
 
-            else:
+            else: # The search query is entirely composed of integers - find item by id
                 queryset_list = queryset_list.filter(id=int(search_query))
         # -----------------------------
-        else:
-            search_query = 'all products'
+        else: #if search query is empty
+            search_query = 'all products' # Display all products
 
         if len(new_queryset_list) !=0:
             queryset_list = new_queryset_list
 
-        if len(queryset_list) != 0:
-            search_message = ""
-        else:
-            search_message = "No Result"
+        amount_product = 3  # How many products will be displayed per page
 
-        amount_product = 3
         to_number = amount_product*int(page)
         from_number = to_number-amount_product
 
-        amount_of_page = len(queryset_list)/amount_product +1
-        list_page = []
+        amount_of_results = len(queryset_list)
 
+        amount_of_page = int(math.ceil(float(len(queryset_list))/float(amount_product)))
+
+        pages_list = []
         for i in range(amount_of_page):
-            list_page.append(i+1)
+            pages_list.append(i+1)
 
         context = {'queryset_list': queryset_list[from_number:to_number],
+                   'amount_of_results': amount_of_results,
                    'search_query': search_query,
                    'category': category,
                    'size': size,
                    'page': page,
-                   'list_page': list_page,
+                   'pages_list': pages_list,
                    'selected_sex': sex,
-                   "search_message": search_message,
                    'categories': set(available_categories),
                    'sizes': set(available_sizes)}
         context.update(cat_context)

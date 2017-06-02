@@ -6,22 +6,21 @@
     <div class="container">
         <div class="page-header">
             <h1>{{product.name}}</h1>
+            <h5 style="text-transform: uppercase;">{{product.category.sex}} | {{product.category.name}}</h5>
         </div>
-        <img src={{product.image}} style="width: 400px; height: 400px;">
-        <br><br>
-
-        <div class="btn-group" role="group" aria-label="...">
-            <button type="button" class="btn btn-default">Extra Large</button>
-            <button type="button" class="btn btn-default">Large</button>
-            <button type="button" class="btn btn-default">Medium</button>
-            <button type="button" class="btn btn-default">Small</button>
+        <div class="row">
+            <div class="col-md-4">
+                <img src={{product.thumbnail}} style="padding-bottom: 20px;">
+                <div class="btn-group" role="group" aria-label="Size-Selection">
+                    <button type="button" class="btn btn-default">XL</button>
+                    <button type="button" class="btn btn-default">L</button>
+                    <button type="button" class="btn btn-default">M</button>
+                    <button type="button" class="btn btn-default">S</button>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="well">{{product.description}}</div>
+            </div>
         </div>
-        <br>
-
-        Extra Large: {{product.stockXL}}<br>
-        Large: {{product.stockL}}<br>
-        Medium: {{product.stockM}}<br>
-        Small: {{product.stockS}}<br>
-
     </div>
 {% endblock %}

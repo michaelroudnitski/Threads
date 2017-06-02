@@ -6,7 +6,7 @@ from django.db import models
 
 class Sex(models.Model):
     """
-    model for mens/womens 
+    model for mens/womens
     """
     MENS = 'm'
     WOMENS = 'w'
@@ -39,7 +39,8 @@ class Product(models.Model):
     name = models.CharField(max_length=30)
 
     price = models.DecimalField(max_digits=6, decimal_places=2, default=0.00)
-    image = models.CharField(max_length=1000, default="/static/catalog/images/Placeholder.jpg")
+    thumbnail = models.CharField(max_length=1000, default="/static/catalog/images/Placeholder.jpg")
+    description = models.CharField(max_length=1500, default="There is no description available at the moment")
     stockXL = models.IntegerField(default=0)
     stockL = models.IntegerField(default=0)
     stockM = models.IntegerField(default=0)
@@ -48,4 +49,4 @@ class Product(models.Model):
     def __str__(self):
         return self.name + ' - ' + self.category.name + ' - ' + str(self.category.sex)
 # manage.py shell
-# from categories.models import Category
+# from (appname).models import Category

@@ -37,10 +37,10 @@
                 document.getElementById("sex_sel").innerHTML = 'Sex: All';
             }
             if (selected_cat === "all_products"){
-                document.getElementById("cat_sel").innerHTML = 'Categories: All';
+                document.getElementById("cat_sel").innerHTML = 'Category: All';
             }
             else {
-                document.getElementById("cat_sel").innerHTML = 'Categories: '+selected_cat;
+                document.getElementById("cat_sel").innerHTML = 'Category: '+selected_cat;
             }
             if (selected_size === "all_size"){
                 document.getElementById("size_sel").innerHTML = 'Size: All';
@@ -90,12 +90,13 @@
 
         </div>
         <div class="col-md-4">
+            search found {{amount_of_results}} items matching "{{search_query}}"
             <table class="table">
                 <tbody>
                     {% for product in queryset_list %}
                         <tr>
                             <td style="width: 200px;"><a href="{% url 'catalog:prod' p_id=product.id %}">
-                                    <img src={{product.image}} style="width: 132px; height: 132px;">
+                                    <img src={{product.thumbnail}} style="width: 132px; height: 132px;">
                             </a></td>
                             <td style="vertical-align: middle;"><a href="{% url 'catalog:prod' p_id=product.id %}">
                                 <h4>{{ product.name }} </h4></a>
@@ -104,15 +105,16 @@
                             </td>
                         </tr>
                     {% endfor %}
-                    <h1>{{ search_message}}</h1>
                 </tbody>
             </table>
         </div>
     </div>
     <nav aria-label="Page navigation" style="margin-left:200px;">
         <ul class="pagination">
-            {% for no in list_page %}
-                <li><a href="{% url 'catalog:search' sex=selected_sex category='all_products' size='all_size' page=no%}?q={{ request.GET.q }}">{{ no }}</a></li>
+            {% for num in pages_list %}
+                <li {% if num == page %} class="active" {% endif %}>
+                    <a href="{% url 'catalog:search' sex=selected_sex category='all_products' size='all_size' page=num%}?q={{ request.GET.q }}">{{ num }}</a>
+                </li>
             {% endfor %}
         </ul>
     </nav>

@@ -3,10 +3,12 @@
 
 {% block body %}
 <div class="container">
-
-    <div class="jumbotron">
-        <h1>NEXT AMAZON</h1>
-        <p><a class="btn btn-primary btn-lg" href="{% url 'catalog:about' %}" role="button">Learn More</a></p>
+    <div class="row">
+        <div class="col-md-12">
+            <a href="{% url 'catalog:search' %}">
+                <img src="/static/catalog/images/banner.png" style="padding-bottom:30px;">
+            </a>
+        </div>
     </div>
 
     <div class="row">
