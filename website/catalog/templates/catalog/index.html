@@ -4,19 +4,18 @@
 {% block body %}
 <div class="container">
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-12 tile-img" style="padding: 30px 15px;">
             <a href="{% url 'catalog:search' %}">
-                <img src="/static/catalog/images/banner.png" style="padding-bottom:30px;">
+                <img src="/static/catalog/images/banner.png">
             </a>
         </div>
     </div>
-
     <div class="row">
-        <div class="col-md-6">
-          <a href="{% url 'catalog:mw' selection='m'%}"><img src="/static/catalog/images/shop_mens.jpg" style='height: 100%; width: 100%; object-fit: contain'></a>
+        <div class="col-md-6 tile-img">
+            <a href="{% url 'catalog:mw' selection='m'%}"><img src="/static/catalog/images/shop_mens.jpg" style='height: 100%; width: 100%; object-fit: contain'></a>
         </div>
-        <div class="col-md-6">
-          <a href="{% url 'catalog:mw' selection='w'%}"><img src="/static/catalog/images/shop_womens.jpg" style='height: 100%; width: 100%; object-fit: contain'></a>
+        <div class="col-md-6 tile-img">
+            <a href="{% url 'catalog:mw' selection='w'%}"><img src="/static/catalog/images/shop_womens.jpg" style='height: 100%; width: 100%; object-fit: contain'></a>
         </div>
     </div>
 </div>

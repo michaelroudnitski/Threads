@@ -1,0 +1,67 @@
+.tile-img a>img{
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    position: relative;
+    -webkit-transition: all 160ms ease-in;
+    -webkit-transform: scale(1);
+    -ms-transition: all 160ms ease-in;
+    -ms-transform: scale(1);
+    -moz-transition: all 160ms ease-in;
+    -moz-transform: scale(1);
+    transition: all 160ms ease-in;
+    transform: scale(1);
+}
+
+.tile-img a>img:hover{
+    z-index: 2;
+    -webkit-transition: all 160ms ease-in;
+    -webkit-transform: scale(1.05);
+    -ms-transition: all 160ms ease-in;
+    -ms-transform: scale(1.05);
+    -moz-transition: all 160ms ease-in;
+    -moz-transform: scale(1.05);
+    transition: all 160ms ease-in;
+    transform: scale(1.05);
+}
+
+.thumbnail a>img, .thumbnail>img{
+    padding-top: 0px;
+    border: 0px;
+    width: 180px;
+    height: 220px;
+    object-fit: cover;
+}
+
+.thumbnail {
+    border:0px;
+}
+
+.product_img{
+    padding-bottom: 20px;
+    max-width: 300px;
+    max-height: 500px;
+}
+
+.list-group-item{
+    border: 2px;
+}
+
+a:hover {
+    text-decoration: none;
+}
+
+.table>tr>td{
+    vertical-align: middle;
+}
+
+.footer {
+    padding: 16px 0px;
+    border-top: 1px solid #e7e7e7;
+}
+
+body{
+    background-image: url('/static/catalog/images/subtle_dots.png');
+    background-repeat: repeat-y repeat-x;
+    padding-bottom: 100px;
+}

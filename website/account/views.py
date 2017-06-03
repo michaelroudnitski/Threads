@@ -17,12 +17,12 @@ def register(request):
             form = UserCreationForm()
             context = {'form': form}
             context.update(cat_context)
-            return render(request, 'account/registration_warning.html', context=context)
+            return render(request, 'account/registration_warning.html', context)
     else:
         form = UserCreationForm()
         context = {'form': form}
         context.update(cat_context)
-        return render(request, 'account/registration.html', context=context)
+        return render(request, 'account/registration.html', context)
 
 
 def index(request):

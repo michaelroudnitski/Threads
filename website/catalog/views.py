@@ -5,6 +5,7 @@ from django.views import generic
 import operator
 import re
 from django.db.models import Q
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from .models import Sex, Category, Product
 import math
 
@@ -81,30 +82,30 @@ def product(request, p_id):
     return render(request, 'catalog/product_info.html', context)
 
 
-def search(request, sex='mw', category='all_products', size='all_size', page=1):
+def search(request, sex='mw', category='all_products', size='all_size'):
     available_categories = Category.objects.values_list('name', flat=True)
     search_query = request.GET.get("q", '')
+    new_queryset_list = []
     available_sizes = ['stockXL', 'stockL', 'stockM', 'stockS']
+    page = request.GET.get('page', 1) # paginator
+    queryset_list = Product.objects.all()
+
+    if sex != 'mw': # if field is not default
+        queryset_list = queryset_list.filter(category__sex__sex_selection=sex)
+
+    elif category != 'all_products':
+        queryset_list = queryset_list.filter(category__name=category)
+
+    elif size != 'all_size':
+        for i in queryset_list:
+            sizes_dic = {'stockXL': i.stockXL, 'stockL': i.stockL, 'stockM': i.stockM, 'stockS': i.stockS}
+            if sizes_dic[size] > 0:
+                new_queryset_list.append(i)
 
     if request.method == 'GET':  # If the form is submitted
-        queryset_list = Product.objects.all()
-        new_queryset_list = []
         if search_query: # If search query is not empty
             if str(search_query) not in "1234567890": # If the search query is not entirely composed of integers
-                keywords = re.split(' ,-', search_query)
-
-                if sex != 'mw': # if field is not default
-                    queryset_list = queryset_list.filter(category__sex__sex_selection=sex)
-
-                elif category != 'all_products':
-                    queryset_list = queryset_list.filter(category__name=category)
-
-                elif size != 'all_size':
-                    for i in queryset_list:
-                        sizes_dic = {'stockXL': i.stockXL, 'stockL': i.stockL, 'stockM': i.stockM, 'stockS': i.stockS}
-                        if sizes_dic[size] > 0:
-                            new_queryset_list.append(i)
-
+                keywords = search_query.split()
                 queryset_list = queryset_list.filter(
                     reduce(operator.or_,
                            (Q(name__icontains=keyword) for keyword in keywords)) |
@@ -121,29 +122,25 @@ def search(request, sex='mw', category='all_products', size='all_size', page=1):
         if len(new_queryset_list) !=0:
             queryset_list = new_queryset_list
 
-        amount_product = 3  # How many products will be displayed per page
-
-        to_number = amount_product*int(page)
-        from_number = to_number-amount_product
+        paginator = Paginator(queryset_list, 10)
+        try:
+            products = paginator.page(page)
+        except PageNotAnInteger:
+            products = paginator.page(1)
+        except EmptyPage:
+            products = paginator.page(paginator.num_pages)
 
         amount_of_results = len(queryset_list)
 
-        amount_of_page = int(math.ceil(float(len(queryset_list))/float(amount_product)))
-
-        pages_list = []
-        for i in range(amount_of_page):
-            pages_list.append(i+1)
-
-        context = {'queryset_list': queryset_list[from_number:to_number],
-                   'amount_of_results': amount_of_results,
+        context = {'amount_of_results': amount_of_results,
                    'search_query': search_query,
                    'category': category,
                    'size': size,
                    'page': page,
-                   'pages_list': pages_list,
+                   'products': products,
                    'selected_sex': sex,
-                   'categories': set(available_categories),
-                   'sizes': set(available_sizes)}
+                   'categories': sorted(set(available_categories)),
+                   'sizes': available_sizes}
         context.update(cat_context)
 
         return render(request, 'catalog/search_info.html', context)

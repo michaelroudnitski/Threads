@@ -24,7 +24,7 @@ urlpatterns = [
     # DEFAULT SEARCH RESULTS PAGE
     url(r'^s/$', views.search, name='search'),
 
-    url(r'^s/sex_(?P<sex>[\w-]+)_cat_(?P<category>[\w-]+)_size_(?P<size>[\w-]+)_pg_(?P<page>[0-9]+)', views.search, name='search'),
+    url(r'^s/sex_(?P<sex>[\w-]+)_cat_(?P<category>[\w-]+)_size_(?P<size>[\w-]+)', views.search, name='search'),
 
     # ABOUT US
     url(r'^about/', views.about, name='about'),
