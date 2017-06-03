@@ -1,4 +1,3 @@
 # Threads
-Our grade 12 group project!
 
-A website made using Django
+An e-commerce website made using Django
