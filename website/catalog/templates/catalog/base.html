@@ -63,7 +63,7 @@
                     </a></li>
                 </ul>
 
-                <form class="navbar-form navbar-right" role="search" action="{% url 'catalog:search' %}" method="GET" value="{{ request.GET.get }}">
+                <form class="navbar-form navbar-right" role="search" action="{% url 'search:search' %}" method="GET" value="{{ request.GET.get }}">
                     <div class="input-group">
                         <input type="text" class="form-control" placeholder="search..." name="q" >
                         <span class="input-group-btn">

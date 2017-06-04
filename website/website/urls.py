@@ -18,7 +18,10 @@ from django.contrib import admin
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    # HOME PAGE
+    # HOME PAGE/CATALOG APP
     url(r'^', include('catalog.urls')),
+    # SEARCH PAGE/APP
+    url(r'^s/', include('search.urls')),
+    # ACCOUNT PAGE/APP
     url(r'^account/', include('account.urls'))
 ]
