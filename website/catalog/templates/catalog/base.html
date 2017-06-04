@@ -47,7 +47,7 @@
                         <a href="{% url 'catalog:mw' selection='w'%}" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                             WOMEN<span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li><a href="{% url 'catalog:mw' selection='m' %}">All</a></li>
+                            <li><a href="{% url 'catalog:mw' selection='w' %}">All</a></li>
                             <li role="separator" class="divider"></li>
                             {% for cata in wcata %}
                             <li><a href="{% url 'catalog:products_list' selection='w' category=cata.name %}">{{ cata.name }} </a></li>

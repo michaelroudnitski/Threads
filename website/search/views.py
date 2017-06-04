@@ -48,7 +48,7 @@ def search(request, sex='mw', category='all_products', size='all_size'):
 
             else: # The search query is entirely composed of integers - find item by id
                 queryset_list = queryset_list.filter(id=int(search_query))
-        # -----------------------------
+
         else: #if search query is empty
             search_query = 'all products' # Display all products
 

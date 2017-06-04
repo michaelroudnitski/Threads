@@ -8,18 +8,18 @@
         <h1>{{ selected }}</h1>
     </div>
     <div class="row">
-        <div class="col-md-3">
+        <div class="col-md-2">
             <h3>Categories</h3>
+            <hr>
             <div class="list-group">
                 {% for cat in cata %}
                     <a href="{% url 'catalog:products_list' selection=selection category=cat.name %}" class="list-group-item">
-                        <span class="badge">{{ cat.product_set.count }}</span>
                         {{ cat.name }}
                     </a>
                 {% endfor %}
             </div>
         </div>
-        <div class="col-md-9">
+        <div class="col-md-10">
             {% for product in products %}
                 <div class="col-md-3">
                     <div class="thumbnail">
@@ -33,5 +33,28 @@
             {% endfor %}
         </div>
     </div>
+    <nav aria-label="Page navigation" style="margin-left:200px;">
+        {% if products.has_other_pages %}
+            <ul class="pagination">
+                {% if products.has_previous %}
+                    <li><a href="?page={{ products.previous_page_number }}">&laquo;</a></li>
+                {% else %}
+                    <li class="disabled"><span>&laquo;</span></li>
+                    {% endif %}
+                {% for i in products.paginator.page_range %}
+                    {% if products.number == i %}
+                    <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+                    {% else %}
+                    <li><a href="?page={{ i }}">{{ i }}</a></li>
+                    {% endif %}
+                {% endfor %}
+                {% if products.has_next %}
+                    <li><a href="?page={{ products.next_page_number }}">&raquo;</a></li>
+                {% else %}
+                    <li class="disabled"><span>&raquo;</span></li>
+                {% endif %}
+            </ul>
+        {% endif %}
+    </nav>
 </div>
 {% endblock %}

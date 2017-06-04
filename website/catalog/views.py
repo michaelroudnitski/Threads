@@ -35,11 +35,24 @@ def mw(request, selection):
     try:
         selected = Sex.objects.get(sex_selection=selection)
         cata = selected.category_set.all()
-        products = Product.objects.all()
-        products = products.filter(category__sex__sex_selection = selection)
+        products = Product.objects.filter(category__sex__sex_selection = selection)
     except Sex.DoesNotExist:
         raise Http404("Invalid selection")
-    context = {'selection': selection, 'selected': selected, 'cata':cata, 'products': products}
+
+    page = request.GET.get('page', 1) # paginator
+    paginator = Paginator(products, 16)
+    try:
+        products = paginator.page(page)
+    except PageNotAnInteger:
+        products = paginator.page(1)
+    except EmptyPage:
+        products = paginator.page(paginator.num_pages)
+
+    context = {'selection': selection,
+               'selected': selected,
+               'cata':cata,
+               'page': page,
+               'products': products,}
     context.update(cat_context)
     return render(request, 'catalog/sex.html', context)
 
@@ -47,18 +60,28 @@ def mw(request, selection):
 def products_list(request, selection, category):
     """
     View request to display products under a selected category
-    :param selection: sex selected
-    :param category: category selected
-    :return: product list template
     """
-    selected = Sex.objects.get(sex_selection=selection)
-    products = Sex.objects.all()
     try:
-        category_selected = Category.objects.get(sex=selected, name=category)
-        items = category_selected.product_set.all()
+        selected = Sex.objects.get(sex_selection=selection)
+        products = Category.objects.get(sex=selected, name=category).product_set.all()
     except Category.DoesNotExist:
         raise Http404("Category does not exist")
-    context = {'items': items, 'category': category, 'selected': selected}
+
+    page = request.GET.get('page', 1) # paginator
+    paginator = Paginator(products, 16)
+    try:
+        products = paginator.page(page)
+    except PageNotAnInteger:
+        products = paginator.page(1)
+    except EmptyPage:
+        products = paginator.page(paginator.num_pages)
+
+    cata = Sex.objects.get(sex_selection=selection).category_set.all()
+    context = {'page': page,
+               'products': products,
+               'category': category,
+               'selected': selected,
+               'cata':cata}
     context.update(cat_context)
     return render(request, 'catalog/products.html', context=context)
 

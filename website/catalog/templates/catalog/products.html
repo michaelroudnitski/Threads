@@ -5,21 +5,57 @@
 {% block body %}
 <div class="container">
     <div class="page-header">
-        <h1>{{selected}} {{category}}</h1>
+        <h1>{{selected}} | {{category}}</h1>
     </div>
     <div class="row">
-        {% for product in items %}
         <div class="col-md-2">
-            <div class="thumbnail">
-                <a href="{% url 'catalog:prod' p_id=product.id %}"><img src={{product.thumbnail}}></a>
-                <div class="caption">
-                    <a href="{% url 'catalog:prod' p_id=product.id %}"><h3 style="text-align: center;">{{ product.name }}</h3></a>
-                    <p style="text-align: center;">${{ product.price }}</p>
-                </div>
+            <h3>Categories</h3>
+            <hr>
+            <div class="list-group">
+                {% for cat in cata %}
+                    <a href="{% url 'catalog:products_list' selection=selected.sex_selection category=cat.name %}" class="list-group-item">
+                        {{ cat.name }}
+                    </a>
+                {% endfor %}
             </div>
         </div>
-        {% endfor %}
+        <div class="col-md-10">
+            {% for product in products %}
+                <div class="col-md-3">
+                    <div class="thumbnail">
+                        <a href="{% url 'catalog:prod' p_id=product.id %}"><img src={{product.thumbnail}}></a>
+                        <div class="caption">
+                            <a href="{% url 'catalog:prod' p_id=product.id %}"><h3 style="text-align: center;">{{ product.name }}</h3></a>
+                            <p style="text-align: center;">${{ product.price }}</p>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
     </div>
+    <nav aria-label="Page navigation" style="margin-left:200px;">
+        {% if products.has_other_pages %}
+            <ul class="pagination">
+                {% if products.has_previous %}
+                    <li><a href="?page={{ products.previous_page_number }}">&laquo;</a></li>
+                {% else %}
+                    <li class="disabled"><span>&laquo;</span></li>
+                    {% endif %}
+                {% for i in products.paginator.page_range %}
+                    {% if products.number == i %}
+                    <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+                    {% else %}
+                    <li><a href="?page={{ i }}">{{ i }}</a></li>
+                    {% endif %}
+                {% endfor %}
+                {% if products.has_next %}
+                    <li><a href="?page={{ products.next_page_number }}">&raquo;</a></li>
+                {% else %}
+                    <li class="disabled"><span>&raquo;</span></li>
+                {% endif %}
+            </ul>
+        {% endif %}
+    </nav>
 </div>
 
 

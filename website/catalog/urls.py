@@ -13,7 +13,7 @@ urlpatterns = [
         url(r'^(?P<selection>[\w-]+)/$', views.mw, name='mw'),
 
         # CATEGORY PAGE DISPLAYING PRODUCTS
-        url(r'^(?P<selection>[\w-]+)/(?P<category>[\w-]+)/$', views.products_list, name='products_list'),
+        url(r'^(?P<selection>[\w-]+)/(?P<category>[ \w-]+)/$', views.products_list, name='products_list'),
 
         ])),
 
