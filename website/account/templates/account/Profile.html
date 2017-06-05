@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+
+{% extends 'catalog/base.html'%}
+{% block body %}
+<div class= "container">
+    <div class="page-header"><h1>Profile Page</h1></div>
+    <h1>Username: {{ user }}</h1>
+    <p> First name: {{user.first_name}}</p>
+    <p> Last name: {{user.last_name}}</p>
+    <p> Email: {{user.email}}</p>
+    <a href="{% url 'account:edit_profile' %} "><button class="btn btn-default" type="button" >Edit</button></a>
+    <a href="{% url 'account:logout_view' %} "><button class="btn btn-default" type="button" >Logout</button></a>
+</div>
+{% endblock %}
+
+</html>

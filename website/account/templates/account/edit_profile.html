@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+
+{% extends 'catalog/base.html'%}
+{% block body %}
+<div class= "container">
+    <form method="post">
+        {% csrf_token %}
+        {{form.as_p}}
+        <button type="sumbit" > Sumbit </buttontype>
+    </form>
+    <br>
+</div>
+{% endblock %}
+
+</html>
