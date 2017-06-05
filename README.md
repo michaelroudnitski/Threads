@@ -1,7 +1,7 @@
 # Threads - ICS4U PROJECT 2017
 
 ## Overview 
-An e-commerce website made using Django
+An e-commerce website made using Python and Django web framework.
 
 ## Getting Started and Requirements
 Before downloading this project, you must have Python 2.7 (2.7.11 was used in development) and Django web framework (1.11 was used in development) installed on your machine.
