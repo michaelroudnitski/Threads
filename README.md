@@ -1,4 +1,4 @@
-# Threads
+# Threads - ICS4U PROJECT 2017
 
 ## Overview 
 An e-commerce website made using Django
