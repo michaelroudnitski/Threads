@@ -23,5 +23,5 @@ urlpatterns = [
     # SEARCH PAGE/APP
     url(r'^s/', include('search.urls')),
     # ACCOUNT PAGE/APP
-    url(r'^account/', include('account.urls'))
+    url(r'^accounts/', include('account.urls'))
 ]
