@@ -39,6 +39,7 @@ class Product(models.Model):
     name = models.CharField(max_length=30)
     rating = models.FloatField(validators = [MinValueValidator(0), MaxValueValidator(5)], default=0)
     price = models.DecimalField(max_digits=6, decimal_places=2, default=0.00)
+    sale_price = models.DecimalField(max_digits=6, decimal_places=2, default=0.00)
     thumbnail = models.CharField(max_length=1000, default="/static/catalog/images/Placeholder.jpg")
     description = models.CharField(max_length=1500, default="There is no description available at the moment")
     stockXL = models.IntegerField(default=0)

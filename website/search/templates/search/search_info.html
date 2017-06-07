@@ -99,7 +99,10 @@
                             <td style="vertical-align: middle;"><a href="{% url 'catalog:prod' p_id=product.id %}">
                                 <h4>{{ product.name }} </h4></a>
                                 <p>{{ product.category }}</p>
-                                <h5>${{ product.price }}</h5>
+                                <p>${{ product.price }}</p>
+                                {% if product.sale_price > 0 and product.sale_price < product.price %}
+                                <p class="sale">On Sale: ${{ product.sale_price }}</p>
+                                {% endif %}
                             </td>
                         </tr>
                     {% endfor %}

@@ -65,3 +65,7 @@ body{
     background-repeat: repeat-y repeat-x;
     padding-bottom: 100px;
 }
+
+.sale{
+    color: #ff0033;
+}

@@ -11,15 +11,35 @@
         <div class="row">
             <div class="col-md-4">
                 <img src={{product.thumbnail}} class="product_img">
+                <br>
+                SKU: {{ product.id }}
+                <br>
                 <div class="btn-group" role="group" aria-label="Size-Selection">
-                    <button type="button" class="btn btn-default">XL</button>
-                    <button type="button" class="btn btn-default">L</button>
-                    <button type="button" class="btn btn-default">M</button>
-                    <button type="button" class="btn btn-default">S</button>
+                    <h3>Available Sizes</h3>
+                    {% if product.stockXL > 0 %}
+                        <button type="button" class="btn btn-default">XL</button>
+                    {% endif %}
+                    {% if product.stockL > 0 %}
+                        <button type="button" class="btn btn-default">L</button>
+                    {% endif %}
+                    {% if product.stockM > 0 %}
+                        <button type="button" class="btn btn-default">M</button>
+                    {% endif %}
+                    {% if product.stockS > 0 %}
+                        <button type="button" class="btn btn-default">S</button>
+                    {% endif %}
                 </div>
             </div>
-            <div class="col-md-8">
+            <div class="col-md-6">
+                {{ product.price }}
+                <br>
+                {% if product.sale_price > 0 and product.sale_price < product.price %}
+                <p class="sale">On Sale: ${{ product.sale_price }}</p>
+                {% endif %}
                 <div class="well">{{product.description}}</div>
+            </div>
+            <div class="col-md-2">
+                RELATED PRODUCTS GO HERE
             </div>
         </div>
     </div>
