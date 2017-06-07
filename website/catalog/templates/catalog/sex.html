@@ -26,9 +26,10 @@
                         <a href="{% url 'catalog:prod' p_id=product.id %}"><img src={{product.thumbnail}}></a>
                         <div class="caption" style="margin: auto;">
                             <a href="{% url 'catalog:prod' p_id=product.id %}"><h3 style="text-align: center;">{{ product.name }}</h3></a>
-                            <p style="text-align: center;">$ {{ product.price }}</p>
                             {% if product.sale_price > 0 and product.sale_price < product.price %}
-                            <p class="sale" style="text-align: center;">On Sale: ${{ product.sale_price }}</p>
+                            <p class="sale" style="text-align: center;"><span style="color:#333"><strike>$ {{ product.price }}</strike></span> $ {{ product.sale_price }}</p>
+                            {% else %}
+                            <p style="text-align: center;">$ {{ product.price }}</p>
                             {% endif %}
                         </div>
                     </div>
