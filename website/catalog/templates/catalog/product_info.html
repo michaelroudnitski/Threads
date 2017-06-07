@@ -31,10 +31,10 @@
                 </div>
             </div>
             <div class="col-md-6">
-                {{ product.price }}
-                <br>
                 {% if product.sale_price > 0 and product.sale_price < product.price %}
-                <p class="sale">On Sale: ${{ product.sale_price }}</p>
+                <p class="sale"><span style="color:#333"><strike>$ {{ product.price }}</strike></span> $ {{ product.sale_price }}</p>
+                {% else %}
+                <p style="text-align: center;">$ {{ product.price }}</p>
                 {% endif %}
                 <div class="well">{{product.description}}</div>
             </div>
