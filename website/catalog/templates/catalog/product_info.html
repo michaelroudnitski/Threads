@@ -9,8 +9,24 @@
             <h5 style="text-transform: uppercase;">{{product.category.sex}} | {{product.category.name}}</h5>
         </div>
         <div class="row">
-            <div class="col-md-4">
-                <img src={{product.thumbnail}} class="product_img">
+            <div class="col-md-5">
+                <div class="col-md-2">
+                    <ul class="sub_img">
+                        <li>
+                            <img src={{product.thumbnail}} class="sub_img">
+                        </li>
+                    </ul>
+                    {% for image in prodImages %}
+                    <ul class="sub_img">
+                        <li>
+                            <img src={{image.image}} class="sub_img">
+                        </li>
+                    </ul>
+                    {% endfor %}
+                </div>
+                <div class="col-md-10">
+                    <img src={{product.thumbnail}} class="product_img">
+                </div>
                 <br>
                 SKU: {{ product.id }}
                 <br>
@@ -30,7 +46,7 @@
                     {% endif %}
                 </div>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-5">
                 {% if product.sale_price > 0 and product.sale_price < product.price %}
                 <p class="sale"><span style="color:#333"><strike>$ {{ product.price }}</strike></span> $ {{ product.sale_price }}</p>
                 {% else %}
