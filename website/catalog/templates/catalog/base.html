@@ -16,7 +16,7 @@
 <body>
     <!-- Navbar -->
     <nav class="navbar navbar-default">
-        <div class="container">
+        <div class="container" style="padding: 10px 15px;">
             <!--header-->
             <div class = "navbar-header">
                 <a class="navbar-brand" href="{% url 'catalog:index'%}">
@@ -57,15 +57,36 @@
 
                 </ul>
 
-                <ul class="nav navbar-nav navbar-right">
-                    <li><a href="{% url 'account:index' %}">
-                        <span class="glyphicon glyphicon-user" aria-hidden="true" ></span>
-                    </a>
+                <div class="nav navbar-nav navbar-right">
+                    </script>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                            <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a href="{% url 'account:index' %}" id = "signin"></a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="{% url 'account:edit_profile' %}" id = "edit_profile"></a></li>
+                            <li><a href="{% url 'account:logout_view' %}" id = "logout"></a></li>
+                            <script>
+                                var user= "{{user}}"
+
+                                if (user === 'AnonymousUser'){
+                                    document.getElementById("signin").innerHTML = 'Login';
+                                    document.getElementById("signin").href="{% url 'account:index' %}";
+
+                                }
+                                else{
+                                    document.getElementById("signin").innerHTML = 'Your Account';
+                                    document.getElementById("signin").href="{% url 'account:profile' %}";
+                                    document.getElementById("logout").innerHTML = 'Log Out';
+                                    document.getElementById("edit_profile").innerHTML = 'Edit Profile';
+                                }
+                            </script>
+                        </ul>
                     </li>
-                    <li><a href="{% url 'account:profile' %}">
-                            {{ user }}
-                    </a></li>
-                </ul>
+
+                </div>
 
                 <form class="navbar-form navbar-right" role="search" action="{% url 'search:search' %}" method="GET" value="{{ request.GET.get }}">
                     <div class="input-group">
