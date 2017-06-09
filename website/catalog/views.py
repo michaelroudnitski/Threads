@@ -97,8 +97,11 @@ def product(request, p_id):
     try:
         product = Product.objects.get(id=p_id)
 <<<<<<< HEAD
+<<<<<<< HEAD
         prodImages = ProductImage.objects.filter(product=p_id).select_related()
         prodImages = list(prodImages).extend(product.thumbnail_image)
+=======
+>>>>>>> 04a9c077f9e67dadc1ca87ca03d4b28abfd305c4
 =======
 >>>>>>> 04a9c077f9e67dadc1ca87ca03d4b28abfd305c4
     except Product.DoesNotExist:
