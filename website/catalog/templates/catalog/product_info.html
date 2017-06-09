@@ -9,8 +9,6 @@
             <h5 style="text-transform: uppercase;">{{product.category.sex}} | {{product.category.name}}</h5>
         </div>
         <div class="row">
-<<<<<<< HEAD
-<<<<<<< HEAD
             <div class="col-md-5">
                 <div class="col-md-2">
                     <ul class="sub_img">
@@ -32,23 +30,32 @@
                 <br>
                 SKU: {{ product.id }}
                 <br>
-=======
-            <div class="col-md-4">
-                <img src={{product.thumbnail}} class="product_img">
->>>>>>> 04a9c077f9e67dadc1ca87ca03d4b28abfd305c4
-=======
-            <div class="col-md-4">
-                <img src={{product.thumbnail}} class="product_img">
->>>>>>> 04a9c077f9e67dadc1ca87ca03d4b28abfd305c4
                 <div class="btn-group" role="group" aria-label="Size-Selection">
-                    <button type="button" class="btn btn-default">XL</button>
-                    <button type="button" class="btn btn-default">L</button>
-                    <button type="button" class="btn btn-default">M</button>
-                    <button type="button" class="btn btn-default">S</button>
+                    <h3>Available Sizes</h3>
+                    {% if product.stockXL > 0 %}
+                        <button type="button" class="btn btn-default">XL</button>
+                    {% endif %}
+                    {% if product.stockL > 0 %}
+                        <button type="button" class="btn btn-default">L</button>
+                    {% endif %}
+                    {% if product.stockM > 0 %}
+                        <button type="button" class="btn btn-default">M</button>
+                    {% endif %}
+                    {% if product.stockS > 0 %}
+                        <button type="button" class="btn btn-default">S</button>
+                    {% endif %}
                 </div>
             </div>
-            <div class="col-md-8">
+            <div class="col-md-5">
+                {% if product.sale_price > 0 and product.sale_price < product.price %}
+                <p class="sale"><span style="color:#333"><strike>$ {{ product.price }}</strike></span> $ {{ product.sale_price }}</p>
+                {% else %}
+                <p style="text-align: center;">$ {{ product.price }}</p>
+                {% endif %}
                 <div class="well">{{product.description}}</div>
+            </div>
+            <div class="col-md-2">
+                RELATED PRODUCTS GO HERE
             </div>
         </div>
     </div>

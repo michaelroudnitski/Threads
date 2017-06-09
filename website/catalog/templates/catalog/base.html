@@ -65,22 +65,21 @@
                         </a>
                         <ul class="dropdown-menu">
                             <li><a href="{% url 'account:index' %}" id = "signin"></a></li>
-                            <li role="separator" class="divider"></li>
-                            <li><a href="{% url 'account:edit_profile' %}" id = "edit_profile"></a></li>
-                            <li><a href="{% url 'account:logout_view' %}" id = "logout"></a></li>
+                            {% if user.first_name %}
+                                <li role="separator" class="divider"></li>
+                                <li><a href="{% url 'account:edit_profile' %}" id = "edit_profile"> Edit Profile</a></li>
+                                <li><a href="{% url 'account:logout_view' %}" id = "logout"> Logout </a></li>
+                            {% endif %}
                             <script>
                                 var user= "{{user}}"
 
                                 if (user === 'AnonymousUser'){
                                     document.getElementById("signin").innerHTML = 'Login';
                                     document.getElementById("signin").href="{% url 'account:index' %}";
-
                                 }
                                 else{
                                     document.getElementById("signin").innerHTML = 'Your Account';
                                     document.getElementById("signin").href="{% url 'account:profile' %}";
-                                    document.getElementById("logout").innerHTML = 'Log Out';
-                                    document.getElementById("edit_profile").innerHTML = 'Edit Profile';
                                 }
                             </script>
                         </ul>
