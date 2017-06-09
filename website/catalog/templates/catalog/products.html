@@ -23,7 +23,7 @@
             {% for product in products %}
                 <div class="col-md-3">
                     <div class="thumbnail">
-                        <a href="{% url 'catalog:prod' p_id=product.id %}"><img src={{product.thumbnail}}></a>
+                        <a href="{% url 'catalog:prod' p_id=product.id %}"><img src={{product.thumbnail_image}}></a>
                         <div class="caption">
                             <a href="{% url 'catalog:prod' p_id=product.id %}"><h3 style="text-align: center;">{{ product.name }}</h3></a>
                             {% if product.sale_price > 0 and product.sale_price < product.price %}
@@ -44,7 +44,7 @@
                     <li><a href="?page={{ products.previous_page_number }}">&laquo;</a></li>
                 {% else %}
                     <li class="disabled"><span>&laquo;</span></li>
-                    {% endif %}
+                {% endif %}
                 {% for i in products.paginator.page_range %}
                     {% if products.number == i %}
                     <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>

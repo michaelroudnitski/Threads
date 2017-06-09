@@ -15,7 +15,9 @@ def index(request):
     """
     MEN = Sex.objects.get(sex_selection='m')
     WOMEN = Sex.objects.get(sex_selection='w')
-    context = {'sex': ['m','w']}
+    featured_list = Product.objects.filter(featured=1)
+    context = {'sex': ['m','w'],
+               'featured_list': featured_list}
     context.update(cat_context)
     return render(request, 'catalog/index.html', context)
 
@@ -94,7 +96,8 @@ def product(request, p_id):
     """
     try:
         product = Product.objects.get(id=p_id)
-        prodImages = ProductImage.objects.filter(product=p_id)
+        prodImages = ProductImage.objects.filter(product=p_id).select_related()
+        prodImages = list(prodImages).extend(product.thumbnail_image)
     except Product.DoesNotExist:
         raise Http404("Product is not in our system")
     context = {'product': product, 'prodImages': prodImages}

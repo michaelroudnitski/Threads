@@ -13,19 +13,19 @@
                 <div class="col-md-2">
                     <ul class="sub_img">
                         <li>
-                            <img src={{product.thumbnail}} class="sub_img">
+                            <img src={{product.thumbnail_image}} class="sub_img">
                         </li>
                     </ul>
                     {% for image in prodImages %}
                     <ul class="sub_img">
                         <li>
-                            <img src={{image.image}} class="sub_img">
+                            <img src="{{image.image}}" class="sub_img"/>
                         </li>
                     </ul>
                     {% endfor %}
                 </div>
                 <div class="col-md-10">
-                    <img src={{product.thumbnail}} class="product_img">
+                    <img src={{prodImages.0.image}} class="product_img">
                 </div>
                 <br>
                 SKU: {{ product.id }}

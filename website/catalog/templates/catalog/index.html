@@ -2,6 +2,36 @@
 
 
 {% block body %}
+<div class="container-fluid" style="background-color:white;">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12" style="text-align:center;">
+                <div class="page-header">
+                    <h2>FEATURED</h2>
+                </div>
+            </div>
+            <div class="FeaturedList">
+                <ul class="list-inline">
+                    {% for product in featured_list %}
+                        <li class="inline-item">
+                                <div class="thumbnail">
+                                    <a href="{% url 'catalog:prod' p_id=product.id %}"><img src={{product.thumbnail_image}}></a>
+                                    <div class="caption" style="margin: auto;">
+                                        <a href="{% url 'catalog:prod' p_id=product.id %}"><h3 style="text-align: center;">{{ product.name }}</h3></a>
+                                        {% if product.sale_price > 0 and product.sale_price < product.price %}
+                                        <p class="sale" style="text-align: center;"><span style="color:#333"><strike>$ {{ product.price }}</strike></span> $ {{ product.sale_price }}</p>
+                                        {% else %}
+                                        <p style="text-align: center;">$ {{ product.price }}</p>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="container">
     <div class="row">
         <div class="col-md-12 tile-img" style="padding: 30px 15px;">
