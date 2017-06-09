@@ -4,6 +4,7 @@
 <div class= "container">
     <div class="page-header"><h1>Create Account</h1></div>
     <form method="post">
+        {% csrf_token %}
         {{ form.as_p }}
         <button type="submit">Submit</button>
     </form>

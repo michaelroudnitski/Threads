@@ -11,6 +11,7 @@
     <p> Email: {{user.email}}</p>
     <a href="{% url 'account:edit_profile' %} "><button class="btn btn-default" type="button" >Edit</button></a>
     <a href="{% url 'account:logout_view' %} "><button class="btn btn-default" type="button" >Logout</button></a>
+    <a href="{% url 'account:del_user' %} "><button class="btn btn-default" type="button" >Delete Account</button></a>
 </div>
 {% endblock %}
 

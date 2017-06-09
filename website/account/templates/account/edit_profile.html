@@ -4,10 +4,11 @@
 {% extends 'catalog/base.html'%}
 {% block body %}
 <div class= "container">
+    <div class="page-header"><h1>Edit Profile</h1></div>
     <form method="post">
         {% csrf_token %}
         {{form.as_p}}
-        <button type="sumbit" > Sumbit </buttontype>
+        <button type="submit" > Submit </buttontype>
     </form>
     <br>
 </div>

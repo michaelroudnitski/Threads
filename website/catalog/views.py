@@ -2,7 +2,7 @@
 from django.http import HttpResponse, Http404
 from django.shortcuts import render
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from catalog.models import Sex, Category, Product, ProductImage
+from catalog.models import Sex, Category, Product
 
 
 mcata = Sex.objects.get(sex_selection='m').category_set.all()
@@ -96,10 +96,13 @@ def product(request, p_id):
     """
     try:
         product = Product.objects.get(id=p_id)
+<<<<<<< HEAD
         prodImages = ProductImage.objects.filter(product=p_id).select_related()
         prodImages = list(prodImages).extend(product.thumbnail_image)
+=======
+>>>>>>> 04a9c077f9e67dadc1ca87ca03d4b28abfd305c4
     except Product.DoesNotExist:
-        raise Http404("Product is not in our system")
-    context = {'product': product, 'prodImages': prodImages}
+        raise Http404("Product is not in our system!")
+    context = {'product': product}
     context.update(cat_context)
     return render(request, 'catalog/product_info.html', context)

@@ -35,14 +35,12 @@
 
 .thumbnail {
     border:0px;
-    width: 100%;
-    height: 100%;
 }
 
 .product_img{
     padding-bottom: 20px;
-    width: 100%;
-    height: 100%;
+    max-width: 300px;
+    max-height: 500px;
 }
 
 .list-group-item{
@@ -67,6 +65,7 @@ body{
     background-repeat: repeat-y repeat-x;
     padding-bottom: 100px;
 }
+<<<<<<< HEAD
 
 .sale{
     color: #ff0033;
@@ -101,3 +100,5 @@ div.FeaturedList {
 .list-inline {
   white-space:nowrap;
 }
+=======
+>>>>>>> 04a9c077f9e67dadc1ca87ca03d4b28abfd305c4
