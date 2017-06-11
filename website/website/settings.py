@@ -54,7 +54,6 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'website.urls'
-CART_SESSION_ID = 'cart'
 
 TEMPLATES = [
     {

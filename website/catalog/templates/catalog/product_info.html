@@ -25,32 +25,36 @@
                     {% endfor %}
                 </div>
                 <div class="col-md-10">
-                    <img src={{prodImages.0.image}} class="product_img">
+                    <img src={{product.thumbnail_image}} class="product_img">
                 </div>
                 <br>
                 SKU: {{ product.id }}
                 <br>
-                <div class="btn-group" role="group" aria-label="Size-Selection">
-                    <h3>Available Sizes</h3>
-                    {% if product.stockXL > 0 %}
-                        <button type="button" class="btn btn-default">XL</button>
-                    {% endif %}
-                    {% if product.stockL > 0 %}
-                        <button type="button" class="btn btn-default">L</button>
-                    {% endif %}
-                    {% if product.stockM > 0 %}
-                        <button type="button" class="btn btn-default">M</button>
-                    {% endif %}
-                    {% if product.stockS > 0 %}
-                        <button type="button" class="btn btn-default">S</button>
-                    {% endif %}
-                </div>
+                <form method="post">
+                    {% csrf_token %}
+                    <select name="size_selection">
+                        {% if product.stockXL > 0 %}
+                            <option value="XL">XL</option>
+                        {% endif %}
+                        {% if product.stockL > 0 %}
+                            <option value="L">L</option>
+                        {% endif %}
+                        {% if product.stockM > 0 %}
+                            <option value="M">M</option>
+                        {% endif %}
+                        {% if product.stockS > 0 %}
+                            <option value="S">S</option>
+                        {% endif %}
+                    </select>
+                    <input type="number" name="quantity" min="1" max="12" value=1>
+                    <input type="submit" name="add_to_cart" class="btn btn-success" onclick="alert('Item added to cart!')" value="Add to Cart"></td>
+                </form>
             </div>
             <div class="col-md-5">
                 {% if product.sale_price > 0 and product.sale_price < product.price %}
                 <p class="sale"><span style="color:#333"><strike>$ {{ product.price }}</strike></span> $ {{ product.sale_price }}</p>
                 {% else %}
-                <p style="text-align: center;">$ {{ product.price }}</p>
+                <p>$ {{ product.price }}</p>
                 {% endif %}
                 <div class="well">{{product.description}}</div>
              </form>

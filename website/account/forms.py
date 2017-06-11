@@ -2,6 +2,7 @@ from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 
+
 class RegistrationForm(UserCreationForm):
     email = forms.EmailField(required=True)
 
@@ -26,6 +27,7 @@ class RegistrationForm(UserCreationForm):
 
         return user
 
+
 class EditProfileForm(UserChangeForm):
 
     class Meta:
@@ -36,6 +38,8 @@ class EditProfileForm(UserChangeForm):
             'last_name',
             'password',
         }
+
+
 class RemoveUser(forms.Form):
     class Meta:
         model = User

@@ -100,9 +100,9 @@
                                 <h4>{{ product.name }} </h4></a>
                                 <p>{{ product.category }}</p>
                                 {% if product.sale_price > 0 and product.sale_price < product.price %}
-                                <p class="sale"><span style="color:#333"><strike>$ {{ product.price }}</strike></span> $ {{ product.sale_price }}</p>
+                                    <p class="sale"><span style="color:#333"><strike>$ {{ product.price }}</strike></span> $ {{ product.sale_price }}</p>
                                 {% else %}
-                                <p>$ {{ product.price }}</p>
+                                    <p>$ {{ product.price }}</p>
                                 {% endif %}
                             </td>
                         </tr>

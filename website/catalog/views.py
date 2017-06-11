@@ -99,25 +99,31 @@ def product(request, p_id):
         prodImages = ProductImage.objects.filter(product=p_id).select_related()
     except Product.DoesNotExist:
         raise Http404("Product is not in our system")
+    if product.sale_price > 0:
+        cart_price = product.sale_price
+    else:
+        cart_price = product.price
+
+    if request.method == 'POST':
+        if 'add_to_cart' in request.POST:
+            cart = request.session.get('cart', {})
+            cart[p_id] = (product.thumbnail_image, product.name, str(cart_price), request.POST.get('size_selection'), request.POST.get('quantity'))
+            request.session['cart'] = cart
+
     context = {'product': product, 'prodImages': prodImages}
     context.update(cat_context)
     return render(request, 'catalog/product_info.html', context)
 
 
-def add_to_cart(request, p_id):
-    product = Product.objects.get(id=p_id)
-    cart = Cart(request)
-    if product.sale_price > 0:
-        cart.add(product, product.sale_price)
-    else:
-        cart.add(product, product.unit_price)
-
-
-def remove_from_cart(request, p_id):
-    product = Product.objects.get(id=p_id)
-    cart = Cart(request)
-    cart.remove(product)
-
-
 def get_cart(request):
-    return render_to_response('cart.html', dict(cart=Cart(request)))
+    cart_items = request.session.get('cart', {})
+
+    if request.method == 'POST':
+        if 'remove_from_cart' in request.POST:
+            cart = request.session.get('cart', {})
+            del cart[request.POST.get('p_id')]
+            request.session['cart'] = cart
+
+    context = {'cart_items': cart_items}
+    context.update(cat_context)
+    return render(request, 'catalog/cart.html', context)
