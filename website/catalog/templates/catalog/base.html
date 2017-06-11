@@ -20,7 +20,7 @@
             <!--header-->
             <div class = "navbar-header">
                 <a class="navbar-brand" href="{% url 'catalog:index'%}">
-                    <img alt="Brand" src="/static/catalog/images/logo.jpg" style="width:50px;">
+                    <img alt="Brand" src="/static/catalog/images/logo.png" style="width:50px;">
                 </a>
                 <button type = "button" class = "navbar-toggle" data-toggle= "collapse" data-target="#topNavBar">
                     <span class = 'icon-bar'></span>
@@ -47,7 +47,7 @@
                         <a href="{% url 'catalog:mw' selection='w'%}" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                             WOMEN<span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li><a href="{% url 'catalog:mw' selection='m' %}">All</a></li>
+                            <li><a href="{% url 'catalog:mw' selection='w' %}">All</a></li>
                             <li role="separator" class="divider"></li>
                             {% for cata in wcata %}
                             <li><a href="{% url 'catalog:products_list' selection='w' category=cata.name %}">{{ cata.name }} </a></li>
@@ -57,13 +57,42 @@
 
                 </ul>
 
-                <ul class="nav navbar-nav navbar-right">
-                    <li><a href="{% url 'account:index' %}">
-                        <span class="glyphicon glyphicon-user" aria-hidden="true" ></span>
-                    </a></li>
-                </ul>
+                <div class="nav navbar-nav navbar-right">
+                    </script>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                            <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            {% if user.first_name %}
+                                <li style="padding-left:20px; padding-bottom:10px;"> Hi, {{user.first_name}}</li>
+                            {% endif %}
+                            <li><a href="{% url 'account:index' %}" id = "signin"></a></li>
+                            {% if user.first_name %}
+                                <li role="separator" class="divider"></li>
+                                <li><a href="{% url 'account:edit_profile' %}" id = "edit_profile"> Edit Profile</a></li>
+                                <li><a href="{% url 'account:logout_view' %}" id = "logout"> Logout </a></li>
+                            {% endif %}
+                            <script>
+                                var user= "{{user}}"
 
-                <form class="navbar-form navbar-right" role="search" action="{% url 'catalog:search' %}" method="GET" value="{{ request.GET.get }}">
+                                if (user === 'AnonymousUser'){
+                                    document.getElementById("signin").innerHTML = 'Login';
+                                    document.getElementById("signin").href="{% url 'account:index' %}";
+                                }
+                                else{
+                                    document.getElementById("signin").innerHTML = 'Your Account';
+                                    document.getElementById("signin").href="{% url 'account:profile' %}";
+                                }
+                            </script>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="{% url 'catalog:get_cart' %}"><span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span></a>
+                    </li>
+                </div>
+
+                <form class="navbar-form navbar-right" role="search" action="{% url 'search:search' %}" method="GET" value="{{ request.GET.get }}">
                     <div class="input-group">
                         <input type="text" class="form-control" placeholder="search..." name="q" >
                         <span class="input-group-btn">

@@ -35,12 +35,14 @@
 
 .thumbnail {
     border:0px;
+    width: 100%;
+    height: 100%;
 }
 
 .product_img{
     padding-bottom: 20px;
-    max-width: 300px;
-    max-height: 500px;
+    width: 100%;
+    height: 100%;
 }
 
 .list-group-item{
@@ -64,4 +66,38 @@ body{
     background-image: url('/static/catalog/images/subtle_dots.png');
     background-repeat: repeat-y repeat-x;
     padding-bottom: 100px;
+}
+
+.sale{
+    color: #ff0033;
+}
+
+.well{
+    border-radius: 0px;
+}
+
+.sub_img{
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    list-style-type: none;
+}
+
+div.FeaturedList {
+    overflow-x:scroll;
+    overflow-y:hidden;
+    height:350px;
+    width:100%;
+    padding: 0 15px;
+}
+
+.inline-item
+{
+    border:1px solid white;
+    height:350px;
+    width: 290px;
+}
+
+.list-inline {
+  white-space:nowrap;
 }
