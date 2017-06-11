@@ -50,9 +50,22 @@ def mw(request, selection):
     except EmptyPage:
         products = paginator.page(paginator.num_pages)
 
+    # Get the index of the current page
+    index = products.number - 1  # edited to something easier without index
+    # This value is maximum index of your pages, so the last page - 1
+    max_index = len(paginator.page_range)
+    # You want a range of 7, so lets calculate where to slice the list
+    start_index = index - 3 if index >= 3 else 0
+    end_index = index + 3 if index <= max_index - 3 else max_index
+    # My new page range
+
+    page_range = list(paginator.page_range)
+    page_range = page_range[start_index:end_index]
+
     context = {'selection': selection,
                'selected': selected,
                'cata':cata,
+               'page_range': page_range,
                'page': page,
                'products': products,}
     context.update(cat_context)
@@ -78,9 +91,22 @@ def products_list(request, selection, category):
     except EmptyPage:
         products = paginator.page(paginator.num_pages)
 
+    # Get the index of the current page
+    index = products.number - 1  # edited to something easier without index
+    # This value is maximum index of your pages, so the last page - 1
+    max_index = len(paginator.page_range)
+    # You want a range of 7, so lets calculate where to slice the list
+    start_index = index - 3 if index >= 3 else 0
+    end_index = index + 3 if index <= max_index - 3 else max_index
+    # My new page range
+
+    page_range = list(paginator.page_range)
+    page_range = page_range[start_index:end_index]
+
     cata = Sex.objects.get(sex_selection=selection).category_set.all()
     context = {'page': page,
                'products': products,
+               'page_range':page_ra8nge,
                'category': category,
                'selected': selected,
                'cata':cata}

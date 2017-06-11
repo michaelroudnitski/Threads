@@ -56,33 +56,44 @@
         <div class="col-md-2" style="border-right: 1px solid #e7e7e7;">
             <h4>Filter By</h4>
             <hr>
-            <h5>Sex</h5>
+            <h5>Sort by</h5>
             <div class="row">
                 <ul style="list-style-type:none;">
-                    <a href="{% url 'search:search' sex='mw' category=category size=size %}?q={{ request.GET.q }}"> All </a>
-                    <a href="{% url 'search:search' sex='m' category=category size=size %}?q={{ request.GET.q }}"><li>Mens</li></a>
-                    <a href="{% url 'search:search' sex='w' category=category size=size %}?q={{ request.GET.q }}"><li>Womens</li></a>
+                    <a href="{% url 'search:search' sex=selected_sex category=category size=size order='name' order_type='asc' %}?q={{ request.GET.q }}"> <li>Name: A to Z </li></a>
+                    <a href="{% url 'search:search' sex=selected_sex category=category size=size order='name' order_type='desc' %}?q={{ request.GET.q }}"> <li>Name: Z to A </li></a>
+                    <a href="{% url 'search:search' sex=selected_sex category=category size=size order='price' order_type='asc' %}?q={{ request.GET.q }}"><li>Price: Low to High</li></a>
+                    <a href="{% url 'search:search' sex=selected_sex category=category size=size order='price' order_type='desc' %}?q={{ request.GET.q }}"><li>Price: High to Low</li></a>
+                    <a href="{% url 'search:search' sex=selected_sex category=category size=size order='rating' order_type='desc' %}?q={{ request.GET.q }}"><li>Rating</li></a>
                 </ul>
             </div>
             <hr>
-            <h5>Category</h5>
-
+            <h5>Sex</h5>
             <div class="row">
                 <ul style="list-style-type:none;">
-                    <a href="{% url 'search:search' sex=selected_sex category='all_products' size=size %}?q={{ request.GET.q }}"> All </a>
+                    <a href="{% url 'search:search' sex='mw' category=category size=size order=selected_order order_type=order_type %}?q={{ request.GET.q }}"> All </a>
+                    <a href="{% url 'search:search' sex='m' category=category size=size  order=selected_order order_type=order_type %}?q={{ request.GET.q }}"><li>Mens</li></a>
+                    <a href="{% url 'search:search' sex='w' category=category size=size  order=selected_order order_type=order_type %}?q={{ request.GET.q }}"><li>Womens</li></a>
+                </ul>
+            </div>
+            <hr>
+
+            <h5>Category</h5>
+            <div class="row">
+                <ul style="list-style-type:none;">
+                    <a href="{% url 'search:search' sex=selected_sex category='all_products' size=size order=selected_order order_type=order_type %}?q={{ request.GET.q }}"> All </a>
                     {% for cat in categories %}
-                        <a href="{% url 'search:search' sex=selected_sex category=cat size=size %}?q={{ request.GET.q }}"><li>{{ cat }}</li></a>
+                        <a href="{% url 'search:search' sex=selected_sex category=cat size=size order=selected_order order_type=order_type %}?q={{ request.GET.q }}"><li>{{ cat }}</li></a>
                     {% endfor %}
                 </ul>
             </div>
             <hr>
-            <h5>Size</h5>
 
+            <h5>Size</h5>
             <div class="row">
                 <ul style="list-style-type:none;">
-                    <a href="{% url 'search:search' sex=selected_sex category='all_products' size='all_size' %}?q={{ request.GET.q }}"> All </a>
+                    <a href="{% url 'search:search' sex=selected_sex category='all_products' size='all_size' order=selected_order order_type=order_type %}?q={{ request.GET.q }}"> All </a>
                     {% for size in sizes %}
-                        <a href="{% url 'search:search' sex=selected_sex category='all_products' size=size %}?q={{ request.GET.q }}"><li>{{ size }}</li></a>
+                        <a href="{% url 'search:search' sex=selected_sex category='all_products' size=size  order=selected_order order_type=order_type %}?q={{ request.GET.q }}"><li>{{ size }}</li></a>
                     {% endfor %}
                 </ul>
             </div>
@@ -119,7 +130,7 @@
                 {% else %}
                     <li class="disabled"><span>&laquo;</span></li>
                     {% endif %}
-                {% for i in products.paginator.page_range %}
+                {% for i in page_range %}
                     {% if products.number == i %}
                     <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
                     {% else %}
