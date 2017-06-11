@@ -102,3 +102,22 @@ def product(request, p_id):
     context = {'product': product, 'prodImages': prodImages}
     context.update(cat_context)
     return render(request, 'catalog/product_info.html', context)
+
+
+def add_to_cart(request, p_id):
+    product = Product.objects.get(id=p_id)
+    cart = Cart(request)
+    if product.sale_price > 0:
+        cart.add(product, product.sale_price)
+    else:
+        cart.add(product, product.unit_price)
+
+
+def remove_from_cart(request, p_id):
+    product = Product.objects.get(id=p_id)
+    cart = Cart(request)
+    cart.remove(product)
+
+
+def get_cart(request):
+    return render_to_response('cart.html', dict(cart=Cart(request)))
