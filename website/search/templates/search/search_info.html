@@ -94,7 +94,7 @@
                     {% for product in products %}
                         <tr>
                             <td style="width: 200px;"><a href="{% url 'catalog:prod' p_id=product.id %}">
-                                    <img class="thumbnail" src={{product.thumbnail_image}} style="width: 132px; height: 132px; object-fit: cover;">
+                                    <img class="img-thumbnail" src={{product.thumbnail_image}} style="width: 132px; height: 132px; object-fit: cover;">
                             </a></td>
                             <td style="vertical-align: middle;"><a href="{% url 'catalog:prod' p_id=product.id %}">
                                 <h4>{{ product.name }} </h4></a>

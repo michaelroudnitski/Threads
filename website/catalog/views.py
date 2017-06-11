@@ -117,13 +117,23 @@ def product(request, p_id):
 
 def get_cart(request):
     cart_items = request.session.get('cart', {})
-
+    subtotal = 0
+    total = 0
     if request.method == 'POST':
         if 'remove_from_cart' in request.POST:
             cart = request.session.get('cart', {})
             del cart[request.POST.get('p_id')]
             request.session['cart'] = cart
 
-    context = {'cart_items': cart_items}
+    cart = request.session.get('cart', {})
+    for item in cart:
+        subtotal += float(cart[item][2])
+    total = round(subtotal*1.13,2)
+    tax = total-subtotal
+
+    context = {'cart_items': cart_items,
+               'subtotal': subtotal,
+               'total': total,
+               'tax': tax}
     context.update(cat_context)
     return render(request, 'catalog/cart.html', context)

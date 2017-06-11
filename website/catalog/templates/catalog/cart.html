@@ -7,12 +7,11 @@
         {% if user.first_name %}
             <h1>{{user.first_name}}'s Cart</h1>
         {% else %}
-            <h1>Your Cart | You must be logged in to checkout</h1>
-
+            <h1>Your Cart | Guest</h1>
         {% endif %}
     </div>
     {% if cart_items %}
-    <div class="col-md-9">
+    <div class="col-md-8">
         <table class="table">
             <tbody>
                 <tr>
@@ -25,8 +24,8 @@
                 {% for key, value in cart_items.iteritems %}
                     <tr>
                         <td style="width: 200px;"><a href="{% url 'catalog:prod' p_id=key %}">
+                            <img class="img-thumbnail" src={{value.0}} style="width: 132px; height: 132px; object-fit: cover;">
                             <h4>{{ value.1}}</h4>
-                            <img class="thumbnail" src={{value.0}} style="width: 132px; height: 132px; object-fit: cover;">
                         </a></td>
                         <td>
                             <h4>{{ value.3}}</h4>
@@ -49,7 +48,27 @@
             </tbody>
         </table>
     </div>
+    <div class="col-md-3">
+        <div class="col-md-6">
+            <ul style="list-style: none;">
+                <li>SUBTOTAL</li>
+                <li>HST</li>
+                <hr>
+                <li><b>TOTAL</b></li>
+                <br>
+                <li><input type="submit" name="remove_from_cart" class="btn btn-primary" onclick="alert('No.')" value="CHECKOUT"></td></li>
+            </ul>
+        </div>
+        <div class="col-md-6">
+            <ul style="list-style: none;">
+                <li>$ {{subtotal}}</li>
+                <li>$ {{tax}}</li>
+                <hr>
+                <li><b>$ {{total}}</b></li>
+            </ul>
+        </div>
 
+    </div>
     {% else %}
         Your shopping cart is empty
     {% endif %}
