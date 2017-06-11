@@ -9,19 +9,22 @@ from django.db.models import Q
 from catalog.models import Sex, Category, Product
 from django.http import HttpResponse, Http404
 from django.shortcuts import render
-
+from django.db.models.functions import Length
 mcata = Sex.objects.get(sex_selection='m').category_set.all()
 wcata = Sex.objects.get(sex_selection='w').category_set.all()
 cat_context = {'mcata': mcata, 'wcata': wcata}
 
 
-def search(request, sex='mw', category='all_products', size='all_size'):
+def search(request, sex='mw', category='all_products', size='all_size', order='name', order_type='asc'):
     available_categories = Category.objects.values_list('name', flat=True)
     search_query = request.GET.get("q", '')
     new_queryset_list = []
     available_sizes = ['stockXL', 'stockL', 'stockM', 'stockS']
     page = request.GET.get('page', 1) # paginator
-    queryset_list = Product.objects.all()
+    if order_type =='asc':
+        queryset_list = Product.objects.order_by(order)
+    elif order_type =='desc':
+        queryset_list = Product.objects.order_by('-'+order)
 
     if sex != 'mw': # if field is not default
         queryset_list = queryset_list.filter(category__sex__sex_selection=sex)
@@ -55,7 +58,8 @@ def search(request, sex='mw', category='all_products', size='all_size'):
         if len(new_queryset_list) !=0:
             queryset_list = new_queryset_list
 
-        paginator = Paginator(queryset_list, 1)
+
+        paginator = Paginator(queryset_list, 10)
         try:
             products = paginator.page(page)
         except PageNotAnInteger:
@@ -85,6 +89,8 @@ def search(request, sex='mw', category='all_products', size='all_size'):
                    'products': products,
                    'page_range':page_range,
                    'selected_sex': sex,
+                   'selected_order': order,
+                   'order_type': order_type,
                    'categories': sorted(set(available_categories)),
                    'sizes': available_sizes}
         context.update(cat_context)
