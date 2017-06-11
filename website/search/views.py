@@ -55,13 +55,25 @@ def search(request, sex='mw', category='all_products', size='all_size'):
         if len(new_queryset_list) !=0:
             queryset_list = new_queryset_list
 
-        paginator = Paginator(queryset_list, 10)
+        paginator = Paginator(queryset_list, 1)
         try:
             products = paginator.page(page)
         except PageNotAnInteger:
             products = paginator.page(1)
         except EmptyPage:
             products = paginator.page(paginator.num_pages)
+
+        # Get the index of the current page
+        index = products.number - 1  # edited to something easier without index
+        # This value is maximum index of your pages, so the last page - 1
+        max_index = len(paginator.page_range)
+        # You want a range of 7, so lets calculate where to slice the list
+        start_index = index - 3 if index >= 3 else 0
+        end_index = index + 3 if index <= max_index - 3 else max_index
+        # My new page range
+
+        page_range = list(paginator.page_range)
+        page_range = page_range[start_index:end_index]
 
         amount_of_results = len(queryset_list)
 
@@ -71,6 +83,7 @@ def search(request, sex='mw', category='all_products', size='all_size'):
                    'size': size,
                    'page': page,
                    'products': products,
+                   'page_range':page_range,
                    'selected_sex': sex,
                    'categories': sorted(set(available_categories)),
                    'sizes': available_sizes}

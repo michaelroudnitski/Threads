@@ -119,7 +119,7 @@
                 {% else %}
                     <li class="disabled"><span>&laquo;</span></li>
                     {% endif %}
-                {% for i in products.paginator.page_range %}
+                {% for i in page_range %}
                     {% if products.number == i %}
                     <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
                     {% else %}
