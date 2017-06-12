@@ -134,7 +134,7 @@ def products_list(request, selection, category, order='name', order_type='asc'):
     return render(request, 'catalog/products.html', context=context)
 
 
-def product(request, p_id):
+def product(request, p_id, thumbnail_image='None'):
     """
     View request displaying html template for a selected product
     :param prod_id: product id given
@@ -146,6 +146,10 @@ def product(request, p_id):
 
     except Product.DoesNotExist:
         raise Http404("Product is not in our system")
+    if thumbnail_image == 'None':
+        thumbnail_image = product.thumbnail_image
+    else:
+        thumbnail_image = ProductImage.objects.get(id=thumbnail_image).image
 
     if product.sale_price > 0:
         cart_price = product.sale_price
@@ -158,10 +162,10 @@ def product(request, p_id):
             cart[p_id] = (product.thumbnail_image, product.name, str(cart_price), request.POST.get('size_selection'), request.POST.get('quantity'))
             request.session['cart'] = cart
 
-    p_list = Category.objects.get(sex=product.category.sex, name=product.category.name).product_set.all()
-    p_list = p_list[:5]
+    related_products = Category.objects.get(sex=product.category.sex, name=product.category.name).product_set.all()
+    related_products = related_products[:5]
 
-    context = {'product': product, 'prodImages': prodImages, 'p_list':p_list}
+    context = {'product': product, 'prodImages': prodImages, 'p_list':related_products, 'thumbnail_image':thumbnail_image}
     context.update(cat_context)
     return render(request, 'catalog/product_info.html', context)
 

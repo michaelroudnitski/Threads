@@ -26,6 +26,9 @@ urlpatterns = [
     # PRODUCT PAGE DISPLAYING PRODUCT INFO
     url(r'^(?P<p_id>[0-9]+)/$', views.product, name='prod'),
 
+    # PRODUCT PAGE DISPLAYING PRODUCT INFO
+    url(r'^(?P<p_id>[0-9]+)/(?P<thumbnail_image>[ \d-]+)/$', views.product, name='prod'),
+
     # CART PAGE
     url(r'^cart/', views.get_cart, name='get_cart'),
 

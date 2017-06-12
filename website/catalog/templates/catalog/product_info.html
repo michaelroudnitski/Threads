@@ -13,19 +13,19 @@
                 <div class="col-md-2">
                     <ul class="sub_img">
                         <li>
-                            <img src={{product.thumbnail_image}} class="sub_img">
+                            <a href="{% url 'catalog:prod' p_id=product.id%}"><img src={{product.thumbnail_image}} class="sub_img"></a>
                         </li>
                     </ul>
                     {% for image in prodImages %}
                     <ul class="sub_img">
                         <li>
-                            <img src="{{image.image}}" class="sub_img"/>
+                            <a href="{% url 'catalog:prod' p_id=product.id thumbnail_image=image.id %}"><img src="{{image.image}}" class="sub_img"/></a>
                         </li>
                     </ul>
                     {% endfor %}
                 </div>
                 <div class="col-md-10">
-                    <img src={{product.thumbnail_image}} class="product_img">
+                    <img src={{thumbnail_image}} class="product_img">
                 </div>
             </div>
             <div class="col-md-5">
