@@ -18,18 +18,28 @@
                     </a>
                 {% endfor %}
             </div>
+            <h3>Sort by</h3>
+            <div class="list-group">
+                <a href="{% url 'catalog:products_list_with_sort' selection=selected.sex_selection category=category order='name' order_type='asc' %}"> <li>Name: A to Z </li></a>
+                <a href="{% url 'catalog:products_list_with_sort'  selection=selected.sex_selection category=category  order='name' order_type='desc' %}"> <li>Name: Z to A </li></a>
+                <a href="{% url 'catalog:products_list_with_sort' selection=selected.sex_selection category=category  order='price' order_type='asc' %}"><li>Price: Low to High</li></a>
+                <a href="{% url 'catalog:products_list_with_sort'  selection=selected.sex_selection category=category  order='price' order_type='desc' %}"><li>Price: High to Low</li></a>
+                <a href="{% url 'catalog:products_list_with_sort'  selection=selected.sex_selection category=category  order='rating' order_type='desc' %}"><li>Rating</li></a>
+            </div>
         </div>
         <div class="col-md-10">
             {% for product in products %}
-                <div class="col-md-3">
+                <div class="col-md-4">
                     <div class="thumbnail">
                         <a href="{% url 'catalog:prod' p_id=product.id %}"><img src={{product.thumbnail_image}}></a>
                         <div class="caption">
                             <a href="{% url 'catalog:prod' p_id=product.id %}"><h3 style="text-align: center;">{{ product.name }}</h3></a>
                             {% if product.sale_price > 0 and product.sale_price < product.price %}
                             <p class="sale" style="text-align: center;"><span style="color:#333"><strike>$ {{ product.price }}</strike></span> $ {{ product.sale_price }}</p>
+                            <p style="text-align: center;">rating: {{ product.rating }}</p>
                             {% else %}
                             <p style="text-align: center;">$ {{ product.price }}</p>
+                            <p style="text-align: center;">rating: {{ product.rating }}</p>
                             {% endif %}
                         </div>
                     </div>
@@ -45,7 +55,7 @@
                 {% else %}
                     <li class="disabled"><span>&laquo;</span></li>
                 {% endif %}
-                {% for i in products.paginator.page_range %}
+                {% for i in page_range%}
                     {% if products.number == i %}
                     <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
                     {% else %}

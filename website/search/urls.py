@@ -7,5 +7,5 @@ urlpatterns = [
     # DEFAULT SEARCH RESULTS PAGE
     url(r'^$', views.search, name='search'),
     # FILTERED SEARCH PAGE
-    url(r'^sex_(?P<sex>[\w-]+)_cat_(?P<category>[ \w-]+)_size_(?P<size>[\w-]+)', views.search, name='search'),
+    url(r'^sex_(?P<sex>[\w-]+)_cat_(?P<category>[ \w-]+)_size_(?P<size>[\w-]+)_order_(?P<order>[\w-]+)_(?P<order_type>[\w-]+)/$', views.search, name='search'),
 ]
