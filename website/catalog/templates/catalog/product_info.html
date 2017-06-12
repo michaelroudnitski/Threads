@@ -13,19 +13,19 @@
                 <div class="col-md-2">
                     <ul class="sub_img">
                         <li>
-                            <img src={{product.thumbnail_image}} class="sub_img">
+                            <a href="{% url 'catalog:prod' p_id=product.id%}"><img src={{product.thumbnail_image}} class="sub_img"></a>
                         </li>
                     </ul>
                     {% for image in prodImages %}
                     <ul class="sub_img">
                         <li>
-                            <img src="{{image.image}}" class="sub_img"/>
+                            <a href="{% url 'catalog:prod' p_id=product.id thumbnail_image=image.id %}"><img src="{{image.image}}" class="sub_img"/></a>
                         </li>
                     </ul>
                     {% endfor %}
                 </div>
                 <div class="col-md-10">
-                    <img src={{product.thumbnail_image}} class="product_img">
+                    <img src={{thumbnail_image}} class="product_img">
                 </div>
             </div>
             <div class="col-md-5">
@@ -57,7 +57,27 @@
                 </form>
             </div>
             <div class="col-md-2">
-                RELATED PRODUCTS GO HERE
+                RELATED PRODUCTS
+                <table class="table">
+                    <tbody>
+                        {% for product in p_list %}
+                            <tr>
+                                <td style="width: 200px;"><a href="{% url 'catalog:prod' p_id=product.id %}">
+                                        <img class="img-thumbnail" src={{product.thumbnail_image}} style="width: 132px; height: 132px; object-fit: cover;">
+                                </a></td>
+                                <td style="vertical-align: middle;"><a href="{% url 'catalog:prod' p_id=product.id %}">
+                                    <h4>{{ product.name }} </h4></a>
+                                    {% if product.sale_price > 0 and product.sale_price < product.price %}
+                                        <p class="sale"><span style="color:#333"><strike>$ {{ product.price }}</strike></span> $ {{ product.sale_price }}</p>
+                                    {% else %}
+                                        <p>$ {{ product.price }}</p>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+
             </div>
         </div>
     </div>

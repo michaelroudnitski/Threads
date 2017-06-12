@@ -9,19 +9,24 @@ from django.db.models import Q
 from catalog.models import Sex, Category, Product
 from django.http import HttpResponse, Http404
 from django.shortcuts import render
+from django.db.models.functions import Length
 
 mcata = Sex.objects.get(sex_selection='m').category_set.all()
 wcata = Sex.objects.get(sex_selection='w').category_set.all()
 cat_context = {'mcata': mcata, 'wcata': wcata}
 
 
-def search(request, sex='mw', category='all_products', size='all_size'):
+def search(request, sex='mw', category='all_products', size='all_size', order='name', order_type='asc'):
     available_categories = Category.objects.values_list('name', flat=True)
     search_query = request.GET.get("q", '')
     new_queryset_list = []
     available_sizes = ['stockXL', 'stockL', 'stockM', 'stockS']
     page = request.GET.get('page', 1) # paginator
-    queryset_list = Product.objects.all()
+
+    if order_type =='asc':
+        queryset_list = Product.objects.order_by(order)
+    elif order_type =='desc':
+        queryset_list = Product.objects.order_by('-'+order)
 
     if sex != 'mw': # if field is not default
         queryset_list = queryset_list.filter(category__sex__sex_selection=sex)
@@ -55,6 +60,7 @@ def search(request, sex='mw', category='all_products', size='all_size'):
         if len(new_queryset_list) !=0:
             queryset_list = new_queryset_list
 
+
         paginator = Paginator(queryset_list, 10)
         try:
             products = paginator.page(page)
@@ -62,6 +68,18 @@ def search(request, sex='mw', category='all_products', size='all_size'):
             products = paginator.page(1)
         except EmptyPage:
             products = paginator.page(paginator.num_pages)
+
+        # Get the index of the current page
+        index = products.number - 1  # edited to something easier without index
+        # This value is maximum index of your pages, so the last page - 1
+        max_index = len(paginator.page_range)
+        # You want a range of 7, so lets calculate where to slice the list
+        start_index = index - 3 if index >= 3 else 0
+        end_index = index + 3 if index <= max_index - 3 else max_index
+        # My new page range
+
+        page_range = list(paginator.page_range)
+        page_range = page_range[start_index:end_index]
 
         amount_of_results = len(queryset_list)
 
@@ -71,7 +89,10 @@ def search(request, sex='mw', category='all_products', size='all_size'):
                    'size': size,
                    'page': page,
                    'products': products,
+                   'page_range':page_range,
                    'selected_sex': sex,
+                   'selected_order': order,
+                   'order_type': order_type,
                    'categories': sorted(set(available_categories)),
                    'sizes': available_sizes}
         context.update(cat_context)

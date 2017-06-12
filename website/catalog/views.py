@@ -4,7 +4,6 @@ from django.shortcuts import render
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from catalog.models import Sex, Category, Product, ProductImage
 
-
 mcata = Sex.objects.get(sex_selection='m').category_set.all()
 wcata = Sex.objects.get(sex_selection='w').category_set.all()
 cat_context = {'mcata': mcata, 'wcata': wcata}
@@ -30,16 +29,26 @@ def about(request):
     return render(request, 'catalog/about_us.html', context)
 
 
-def mw(request, selection):
+def mw(request, selection, order='name', order_type='asc'):
     """
     View request for sex (mens or womens) page of catalog
     """
     try:
         selected = Sex.objects.get(sex_selection=selection)
         cata = selected.category_set.all()
-        products = Product.objects.filter(category__sex__sex_selection = selection)
+        if order_type == 'asc':
+            products = Product.objects.order_by(order)
+        elif order_type == 'desc':
+            products = Product.objects.order_by('-' + order)
+        products = products.filter(category__sex__sex_selection = selection)
+
     except Sex.DoesNotExist:
         raise Http404("Invalid selection")
+
+    if order_type =='asc':
+        products = products.order_by(order)
+    elif order_type =='desc':
+        products = products.order_by('-'+order)
 
     page = request.GET.get('page', 1) # paginator
     paginator = Paginator(products, 16)
@@ -50,16 +59,32 @@ def mw(request, selection):
     except EmptyPage:
         products = paginator.page(paginator.num_pages)
 
+    # Get the index of the current page
+    index = products.number - 1  # edited to something easier without index
+    # This value is maximum index of your pages, so the last page - 1
+    max_index = len(paginator.page_range)
+    # You want a range of 7, so lets calculate where to slice the list
+    start_index = index - 3 if index >= 3 else 0
+    end_index = index + 3 if index <= max_index - 3 else max_index
+    # My new page range
+
+    page_range = list(paginator.page_range)
+    page_range = page_range[start_index:end_index]
+
     context = {'selection': selection,
                'selected': selected,
                'cata':cata,
+               'page_range': page_range,
                'page': page,
-               'products': products,}
+               'products': products,
+               'order':order,
+               'order_type':order_type,
+               }
     context.update(cat_context)
     return render(request, 'catalog/sex.html', context)
 
 
-def products_list(request, selection, category):
+def products_list(request, selection, category, order='name', order_type='asc'):
     """
     View request to display products under a selected category
     """
@@ -69,6 +94,11 @@ def products_list(request, selection, category):
     except Category.DoesNotExist:
         raise Http404("Category does not exist")
 
+    if order_type =='asc':
+        products = products.order_by(order)
+    elif order_type =='desc':
+        products = products.order_by('-'+order)
+
     page = request.GET.get('page', 1) # paginator
     paginator = Paginator(products, 16)
     try:
@@ -78,17 +108,33 @@ def products_list(request, selection, category):
     except EmptyPage:
         products = paginator.page(paginator.num_pages)
 
+    # Get the index of the current page
+    index = products.number - 1  # edited to something easier without index
+    # This value is maximum index of your pages, so the last page - 1
+    max_index = len(paginator.page_range)
+    # You want a range of 7, so lets calculate where to slice the list
+    start_index = index - 3 if index >= 3 else 0
+    end_index = index + 3 if index <= max_index - 3 else max_index
+    # My new page range
+
+    page_range = list(paginator.page_range)
+    page_range = page_range[start_index:end_index]
+
     cata = Sex.objects.get(sex_selection=selection).category_set.all()
     context = {'page': page,
                'products': products,
+               'page_range':page_range,
                'category': category,
                'selected': selected,
-               'cata':cata}
+               'cata':cata,
+               'order': order,
+               'order_type': order_type,
+               }
     context.update(cat_context)
     return render(request, 'catalog/products.html', context=context)
 
 
-def product(request, p_id):
+def product(request, p_id, thumbnail_image='None'):
     """
     View request displaying html template for a selected product
     :param prod_id: product id given
@@ -97,8 +143,14 @@ def product(request, p_id):
     try:
         product = Product.objects.get(id=p_id)
         prodImages = ProductImage.objects.filter(product=p_id).select_related()
+
     except Product.DoesNotExist:
         raise Http404("Product is not in our system")
+    if thumbnail_image == 'None':
+        thumbnail_image = product.thumbnail_image
+    else:
+        thumbnail_image = ProductImage.objects.get(id=thumbnail_image).image
+
     if product.sale_price > 0:
         cart_price = product.sale_price
     else:
@@ -110,7 +162,10 @@ def product(request, p_id):
             cart[p_id] = (product.thumbnail_image, product.name, str(cart_price), request.POST.get('size_selection'), request.POST.get('quantity'))
             request.session['cart'] = cart
 
-    context = {'product': product, 'prodImages': prodImages}
+    related_products = Category.objects.get(sex=product.category.sex, name=product.category.name).product_set.all()
+    related_products = related_products[:5]
+
+    context = {'product': product, 'prodImages': prodImages, 'p_list':related_products, 'thumbnail_image':thumbnail_image}
     context.update(cat_context)
     return render(request, 'catalog/product_info.html', context)
 
