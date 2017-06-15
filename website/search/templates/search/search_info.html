@@ -56,17 +56,6 @@
         <div class="col-md-2" style="border-right: 1px solid #e7e7e7;">
             <h4>Filter By</h4>
             <hr>
-            <h5>Sort by</h5>
-            <div class="row">
-                <ul style="list-style-type:none;">
-                    <a href="{% url 'search:search' sex=selected_sex category=category size=size order='name' order_type='asc' %}?q={{ request.GET.q }}"> <li>Name: A to Z </li></a>
-                    <a href="{% url 'search:search' sex=selected_sex category=category size=size order='name' order_type='desc' %}?q={{ request.GET.q }}"> <li>Name: Z to A </li></a>
-                    <a href="{% url 'search:search' sex=selected_sex category=category size=size order='price' order_type='asc' %}?q={{ request.GET.q }}"><li>Price: Low to High</li></a>
-                    <a href="{% url 'search:search' sex=selected_sex category=category size=size order='price' order_type='desc' %}?q={{ request.GET.q }}"><li>Price: High to Low</li></a>
-                    <a href="{% url 'search:search' sex=selected_sex category=category size=size order='rating' order_type='desc' %}?q={{ request.GET.q }}"><li>Rating</li></a>
-                </ul>
-            </div>
-            <hr>
             <h5>Sex</h5>
             <div class="row">
                 <ul style="list-style-type:none;">
@@ -99,8 +88,29 @@
             </div>
 
         </div>
-        <div class="col-md-4">
+        <div class="col-md-10">
             <table class="table">
+               <ul class=" pull-right dropdown">
+               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Sort By<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="{% url 'search:search' sex=selected_sex category=category size=size order='name' order_type='asc' %}?q={{ request.GET.q }}">
+                            <span class="glyphicon glyphicon-sort-by-alphabet" aria-hidden="true" ></span> Name: A to Z
+                        </a></li>
+                        <li><a href="{% url 'search:search' sex=selected_sex category=category size=size order='name' order_type='desc' %}?q={{ request.GET.q }}">
+                            <span class="glyphicon glyphicon-sort-by-alphabet-alt" aria-hidden="true" ></span> Name: Z to A
+                        </a></li>
+                        <li><a href="{% url 'search:search' sex=selected_sex category=category size=size order='price' order_type='asc' %}?q={{ request.GET.q }}">
+                            <span class="glyphicon glyphicon-sort-by-order" aria-hidden="true" ></span> Price: Low to High
+                        </a></li>
+                        <li><a href="{% url 'search:search' sex=selected_sex category=category size=size order='price' order_type='desc' %}?q={{ request.GET.q }}">
+                            <span class="glyphicon glyphicon-sort-by-order-alt" aria-hidden="true" ></span> Price: High to Low
+                        </a></li>
+                        <li><a href="{% url 'search:search' sex=selected_sex category=category size=size order='rating' order_type='desc' %}?q={{ request.GET.q }}">
+                            <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true" ></span> Rating
+                        </a></li>
+                    </ul>
+                </ul>
+                <hr>
                 <tbody>
                     {% for product in products %}
                         <tr>

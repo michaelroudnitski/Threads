@@ -1,0 +1,48 @@
+{% extends 'catalog/base.html'%}
+
+{% block body %}
+<div class="container" style="max-width:800px;">
+    <div class="row">
+        <div class="panel panel-success">
+            <div class="panel-heading">
+                <h3 class="panel-title">{{product.name}} has been added to your cart</h3>
+            </div>
+            <div class="panel-body">
+                <table class="table">
+                    <tbody>
+                        <tr>
+                            <td><a href="{% url 'catalog:prod' p_id=product.id%}"><img src={{product.thumbnail_image}} class="img-thumbnail" style="width: 132px; height: 132px; object-fit: cover;"></a></td>
+                            <td><a href="{% url 'catalog:prod' p_id=product.id %}"><h4>{{ product.name }}</h4></a>
+                                {% if product.sale_price > 0 and product.sale_price < product.price %}
+                                    <h5 class="sale"><span style="color:#333"><strike><h5>$ {{ product.price }}</h5></strike></span> $ {{ product.sale_price }}</h5>
+                                {% else %}
+                                    <h5>$ {{ product.price }}</h5>
+                                {% endif %}</td>
+                            <td><a href="{% url 'catalog:get_cart' %}" class="btn btn-success">View Cart</a>
+                                <a href="{% url 'catalog:index' %}" class="btn btn-default">Continue Shopping</a></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="page-header">
+            <h3 style="text-align:center;">RELATED PRODUCTS</h3>
+        </div>
+        {% for product in p_list %}
+        <div class="col-md-4">
+            <a href="{% url 'catalog:prod' p_id=product.id %}">
+                    <img class="img-thumbnail" src={{product.thumbnail_image}} style="width: 132px; height: 132px; object-fit: cover; display: block; margin: auto;">
+                    <h4 style="text-align:center;">{{ product.name }} </h4></a>
+            </a>
+            {% if product.sale_price > 0 and product.sale_price < product.price %}
+                <p class="sale" style="text-align:center;"><span style="color:#333"><strike>$ {{ product.price }}</strike></span> $ {{ product.sale_price }}</p>
+            {% else %}
+                <p style="text-align:center;">$ {{ product.price }}</p>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

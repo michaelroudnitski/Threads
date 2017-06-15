@@ -6,11 +6,16 @@ from django.contrib.auth.models import User
 from django.contrib.auth import logout
 from account.forms import RegistrationForm, EditProfileForm, RemoveUser
 
+
+# make this block of code a global function so it doesnt need to be repeated everytime
 mcata = Sex.objects.get(sex_selection='m').category_set.all()
 wcata = Sex.objects.get(sex_selection='w').category_set.all()
 cat_context = {'mcata': mcata, 'wcata': wcata}
+######################################################################################
+
 
 def register(request):
+    """page the user sees when registering"""
     if request.method == 'POST':
         form = RegistrationForm(request.POST)
         if form.is_valid():
@@ -22,12 +27,23 @@ def register(request):
         context.update(cat_context)
         return render(request, 'account/registration.html', context)
 
+
 def profile(request):
+    """profile overview page
+    This is what the user sees when he's already signed in"""
     context = {'user': request.user}
     context.update(cat_context)
     return render(request, 'account/Profile.html', context)
 
+
+def index(request):
+    """Account overview when the user is not signed in"""
+    context = cat_context
+    return render(request, 'account/index.html', context)
+
+
 def edit_profile(request):
+    """profile editing page"""
     if request.method == "POST":
         form = EditProfileForm(request.POST, instance=request.user)
 
@@ -40,7 +56,9 @@ def edit_profile(request):
         context.update(cat_context)
         return render(request,'account/edit_profile.html', context)
 
+
 def change_password(request):
+    """password changing page"""
     if request.method == "POST":
         form = PasswordChangeForm(data=request.POST, user=request.user)
 
@@ -55,17 +73,15 @@ def change_password(request):
         context.update(cat_context)
         return render(request,'account/change_password.html', context)
 
+
 def del_user(request):
+    """Quang pls"""
     u = User.objects.get(username=request.user)
     u.delete()
     return render(request, 'catalog/index.html')
 
 
 def logout_view(request):
+    """page the user sees when logging out"""
     logout(request)
     return redirect('/catalog')
-
-def index(request):
-    context = cat_context
-    return render(request, 'account/index.html', context)
-

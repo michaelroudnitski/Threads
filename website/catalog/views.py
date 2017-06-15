@@ -3,36 +3,33 @@ from django.http import HttpResponse, Http404
 from django.shortcuts import render
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from catalog.models import Sex, Category, Product, ProductImage
+from django.shortcuts import redirect
 
+# make this block of code a global function so it doesnt need to be repeated everytime
 mcata = Sex.objects.get(sex_selection='m').category_set.all()
 wcata = Sex.objects.get(sex_selection='w').category_set.all()
 cat_context = {'mcata': mcata, 'wcata': wcata}
+######################################################################################
 
 def index(request):
-    """
-    View request for index page of catalog
-    """
+    """View request for index page of catalog"""
     MEN = Sex.objects.get(sex_selection='m')
     WOMEN = Sex.objects.get(sex_selection='w')
     featured_list = Product.objects.filter(featured=1)
     context = {'sex': ['m','w'],
                'featured_list': featured_list}
-    context.update(cat_context)
+    context.update(cat_context) # this line adds all our category information to the page, it's necessary for our Men's/Women's dropdowns
     return render(request, 'catalog/index.html', context)
 
 
 def about(request):
-    """
-    View request for about us page of catalog
-    """
+    """View request for about us page of catalog"""
     context = cat_context
     return render(request, 'catalog/about_us.html', context)
 
 
 def mw(request, selection, order='name', order_type='asc'):
-    """
-    View request for sex (mens or womens) page of catalog
-    """
+    """View request for sex (mens or womens) page of catalog"""
     try:
         selected = Sex.objects.get(sex_selection=selection)
         cata = selected.category_set.all()
@@ -85,9 +82,7 @@ def mw(request, selection, order='name', order_type='asc'):
 
 
 def products_list(request, selection, category, order='name', order_type='asc'):
-    """
-    View request to display products under a selected category
-    """
+    """View request to display products under a selected category"""
     try:
         selected = Sex.objects.get(sex_selection=selection)
         products = Category.objects.get(sex=selected, name=category).product_set.all()
@@ -135,15 +130,10 @@ def products_list(request, selection, category, order='name', order_type='asc'):
 
 
 def product(request, p_id, thumbnail_image='None'):
-    """
-    View request displaying html template for a selected product
-    :param prod_id: product id given
-    :return: product page template
-    """
+    """View request displaying html template for a selected product"""
     try:
         product = Product.objects.get(id=p_id)
         prodImages = ProductImage.objects.filter(product=p_id).select_related()
-
     except Product.DoesNotExist:
         raise Http404("Product is not in our system")
     if thumbnail_image == 'None':
@@ -156,25 +146,30 @@ def product(request, p_id, thumbnail_image='None'):
     else:
         cart_price = product.price
 
-    if request.method == 'POST':
-        if 'add_to_cart' in request.POST:
-            cart = request.session.get('cart', {})
+    if request.method == 'POST':    # check if form is submitted
+        if 'add_to_cart' in request.POST:   # if the form was the add to cart form
+            cart = request.session.get('cart', {})  # add to item to our cart dictionary
             cart[p_id] = (product.thumbnail_image, product.name, str(cart_price), request.POST.get('size_selection'), request.POST.get('quantity'))
             request.session['cart'] = cart
+            return redirect('catalog:cart_confirmation', p_id=p_id) # redirects to page showing confirmation of cart addition
 
-    related_products = Category.objects.get(sex=product.category.sex, name=product.category.name).product_set.all()
-    related_products = related_products[:5]
+    related_products = Category.objects.get(sex=product.category.sex, name=product.category.name).product_set.all().exclude(id=p_id)
+    related_products = related_products[:8]
 
-    context = {'product': product, 'prodImages': prodImages, 'p_list':related_products, 'thumbnail_image':thumbnail_image}
+    context = {'product': product,
+                'prodImages': prodImages,
+                'p_list':related_products,
+                'thumbnail_image':thumbnail_image}
     context.update(cat_context)
     return render(request, 'catalog/product_info.html', context)
 
 
 def get_cart(request):
+    """View function for the user's cart"""
     cart_items = request.session.get('cart', {})
     subtotal = 0
     total = 0
-    if request.method == 'POST':
+    if request.method == 'POST': # Same formula as add to cart, just opposite
         if 'remove_from_cart' in request.POST:
             cart = request.session.get('cart', {})
             del cart[request.POST.get('p_id')]
@@ -182,7 +177,7 @@ def get_cart(request):
 
     cart = request.session.get('cart', {})
     for item in cart:
-        subtotal += float(cart[item][2])
+        subtotal += float(cart[item][2])*int(cart[item][4])
     total = round(subtotal*1.13,2)
     tax = total-subtotal
 
@@ -192,3 +187,18 @@ def get_cart(request):
                'tax': tax}
     context.update(cat_context)
     return render(request, 'catalog/cart.html', context)
+
+
+def cart_confirmation(request, p_id):
+    """The page a user sees after adding an item to their cart"""
+    try:
+        product = Product.objects.get(id=p_id)
+    except Product.DoesNotExist:
+        raise Http404("Invalid product selection")
+
+    related_products = Category.objects.get(sex=product.category.sex, name=product.category.name).product_set.all().exclude(id=p_id)
+    related_products = related_products[:5]
+    context = {'product': product,
+               'p_list':related_products,}
+    context.update(cat_context)
+    return render(request, 'catalog/cart_confirmation.html', context)

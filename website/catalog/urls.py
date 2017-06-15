@@ -2,7 +2,7 @@ from django.conf.urls import include, url
 from . import views
 
 app_name = 'catalog'
-
+# r'^(?P<selection>[\w-]+)/$' is a *regular expression* looking for string values
 urlpatterns = [
 
     url(r'^catalog/', include([
@@ -29,8 +29,11 @@ urlpatterns = [
     # PRODUCT PAGE DISPLAYING PRODUCT INFO
     url(r'^(?P<p_id>[0-9]+)/(?P<thumbnail_image>[ \d-]+)/$', views.product, name='prod'),
 
+    # ITEM ADDED TO CART CONFIRMATION PAGE
+    url(r'^cart/cart_confirmation/(?P<p_id>[0-9]+)/$', views.cart_confirmation, name='cart_confirmation'),
+
     # CART PAGE
-    url(r'^cart/', views.get_cart, name='get_cart'),
+    url(r'^cart/$', views.get_cart, name='get_cart'),
 
     # ABOUT US
     url(r'^about/', views.about, name='about'),

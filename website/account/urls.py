@@ -10,7 +10,7 @@ urlpatterns = [
     url(r'^profile/$', views.profile, name='profile'),
     url(r'^profile/edit/$', views.edit_profile, name='edit_profile'),
     url(r'^logout/$', views.logout_view, name='logout_view'),
-    url(r'^password/$', views.change_password, name='change_password'),
+    url(r'^profile/password/$', views.change_password, name='change_password'),
     url(r'^delete-account/$', views.del_user, name='del_user'),
 
     url(r'^reset-password/$', password_reset, {'template_name': 'account/reset_password.html', 'post_reset_redirect': 'account:password_reset_done', 'email_template_name': 'account/reset_password_email.html'}, name='reset_password'),

@@ -11,9 +11,12 @@ from django.http import HttpResponse, Http404
 from django.shortcuts import render
 from django.db.models.functions import Length
 
+
+# make this block of code a global function so it doesnt need to be repeated everytime
 mcata = Sex.objects.get(sex_selection='m').category_set.all()
 wcata = Sex.objects.get(sex_selection='w').category_set.all()
 cat_context = {'mcata': mcata, 'wcata': wcata}
+######################################################################################
 
 
 def search(request, sex='mw', category='all_products', size='all_size', order='name', order_type='asc'):
