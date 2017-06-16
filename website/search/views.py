@@ -31,17 +31,6 @@ def search(request, sex='mw', category='all_products', size='all_size', order='n
     elif order_type =='desc':
         queryset_list = Product.objects.order_by('-'+order)
 
-    if sex != 'mw': # if field is not default
-        queryset_list = queryset_list.filter(category__sex__sex_selection=sex)
-
-    elif category != 'all_products':
-        queryset_list = queryset_list.filter(category__name=category)
-
-    elif size != 'all_size':
-        for i in queryset_list:
-            sizes_dic = {'stockXL': i.stockXL, 'stockL': i.stockL, 'stockM': i.stockM, 'stockS': i.stockS}
-            if sizes_dic[size] > 0:
-                new_queryset_list.append(i)
 
     if request.method == 'GET':  # If the form is submitted
         if search_query: # If search query is not empty
@@ -60,6 +49,16 @@ def search(request, sex='mw', category='all_products', size='all_size', order='n
 
         else: #if search query is empty
             search_query = 'all products' # Display all products
+
+        if sex != 'mw': # if field is not default
+            queryset_list = queryset_list.filter(category__sex__sex_selection=sex)
+        if category != 'all_products':
+            queryset_list = queryset_list.filter(category__name=category)
+        if size != 'all_size':
+            for i in queryset_list:
+                sizes_dic = {'stockXL': i.stockXL, 'stockL': i.stockL, 'stockM': i.stockM, 'stockS': i.stockS}
+                if sizes_dic[size] > 0:
+                    new_queryset_list.append(i)
 
         if len(new_queryset_list) !=0:
             queryset_list = new_queryset_list
