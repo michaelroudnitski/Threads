@@ -16,16 +16,17 @@ cat_context = {'mcata': mcata, 'wcata': wcata}
 
 def register(request):
     """page the user sees when registering"""
+    # Get the request
     if request.method == 'POST':
-        form = RegistrationForm(request.POST)
-        if form.is_valid():
+        form = RegistrationForm(request.POST)                                                       # Get the register form
+        if form.is_valid():                                                                         # If the datas in form are valid
             form.save()
             return redirect('/accounts')
     else:
-        form = RegistrationForm()
-        context = {'form': form}
-        context.update(cat_context)
-        return render(request, 'account/registration.html', context)
+        form = RegistrationForm()                                                                   # Show the form again
+        context = {'form': form}                                                                    # Put the form in a context
+        context.update(cat_context)                                                                 # Add some cat_context to the new context
+        return render(request, 'account/registration.html', context)                                # Direct the to the website with context
 
 
 def profile(request):
@@ -44,11 +45,13 @@ def index(request):
 
 def edit_profile(request):
     """profile editing page"""
+    # Get the request
     if request.method == "POST":
+        # Edit profile form
         form = EditProfileForm(request.POST, instance=request.user)
 
-        if form.is_valid():
-            form.save()
+        if form.is_valid():                                                                           # IF the form is valid
+            form.save()                                                                               # Save the form
             return redirect('/accounts/profile')
     else:
         form = EditProfileForm(instance=request.user)
@@ -59,6 +62,8 @@ def edit_profile(request):
 
 def change_password(request):
     """password changing page"""
+    # Same idea with edit profile but only change the form
+
     if request.method == "POST":
         form = PasswordChangeForm(data=request.POST, user=request.user)
 
@@ -75,13 +80,14 @@ def change_password(request):
 
 
 def del_user(request):
-    """Quang pls"""
+    """function that delete the user from being exist"""
+    # Get the user
     u = User.objects.get(username=request.user)
-    u.delete()
+    u.delete() # Deleted boy git gud plz
     return render(request, 'catalog/index.html')
 
 
 def logout_view(request):
-    """page the user sees when logging out"""
+    """Function that logout the user"""
     logout(request)
     return redirect('/catalog')

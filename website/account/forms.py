@@ -4,8 +4,11 @@ from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 
 
 class RegistrationForm(UserCreationForm):
+
+    # Email
     email = forms.EmailField(required=True)
 
+    # Show the some specific things in the registeration form
     class Meta:
         model = User
         fields ={
@@ -16,12 +19,15 @@ class RegistrationForm(UserCreationForm):
             'password1',
             'password2',
         }
-    def save(self, commit=True):
-        user= super(RegistrationForm, self).save(commit=False)
-        user.first_name = self.cleaned_data['first_name']
-        user.last_name = self.cleaned_data['last_name']
-        user.email = self.cleaned_data['email']
 
+    # Function that save the change to the main database
+    def save(self, commit=True):
+        user= super(RegistrationForm, self).save(commit=False)              # Call the user object
+        user.first_name = self.cleaned_data['first_name']                   # Change the first name
+        user.last_name = self.cleaned_data['last_name']                     # Change the last name
+        user.email = self.cleaned_data['email']                             # Change the first name
+
+        # commit
         if commit:
             user.save()
 
@@ -30,6 +36,7 @@ class RegistrationForm(UserCreationForm):
 
 class EditProfileForm(UserChangeForm):
 
+    # Show the some specific things in the edit profile form
     class Meta:
         model = User
         fields = {
@@ -41,6 +48,7 @@ class EditProfileForm(UserChangeForm):
 
 
 class RemoveUser(forms.Form):
+    # Show the username in the remove user form
     class Meta:
         model = User
         fields = {'username',
