@@ -37,7 +37,7 @@ def mw(request, selection, order='name', order_type='asc'):
             products = Product.objects.order_by(order)
         elif order_type == 'desc':
             products = Product.objects.order_by('-' + order)
-        products = products.filter(category__sex__sex_selection = selection)
+        products = products.filter(category__sex__sex_selection=selection)
 
     except Sex.DoesNotExist:
         raise Http404("Invalid selection")
@@ -48,7 +48,7 @@ def mw(request, selection, order='name', order_type='asc'):
         products = products.order_by('-'+order)
 
     page = request.GET.get('page', 1) # paginator
-    paginator = Paginator(products, 16)
+    paginator = Paginator(products, 15)
     try:
         products = paginator.page(page)
     except PageNotAnInteger:
@@ -95,7 +95,7 @@ def products_list(request, selection, category, order='name', order_type='asc'):
         products = products.order_by('-'+order)
 
     page = request.GET.get('page', 1) # paginator
-    paginator = Paginator(products, 16)
+    paginator = Paginator(products, 15)
     try:
         products = paginator.page(page)
     except PageNotAnInteger:
@@ -136,14 +136,14 @@ def product(request, p_id, thumbnail_image='None'):
         prodImages = ProductImage.objects.filter(product=p_id).select_related()
     except Product.DoesNotExist:
         raise Http404("Product is not in our system")
-    if thumbnail_image == 'None':
+    if thumbnail_image == 'None':   # Default preview image for the page
         thumbnail_image = product.thumbnail_image
-    else:
+    else:   # Sets a new preview image if our url is provided with one
         thumbnail_image = ProductImage.objects.get(id=thumbnail_image).image
 
-    if product.sale_price > 0:
+    if product.sale_price > 0 and product.sale_price < product.price: # IF the product is on sale, set it's cart price to the sale price
         cart_price = product.sale_price
-    else:
+    else:   # else, keep regular price
         cart_price = product.price
 
     if request.method == 'POST':    # check if form is submitted
@@ -177,7 +177,7 @@ def get_cart(request):
 
     cart = request.session.get('cart', {})
     for item in cart:
-        subtotal += float(cart[item][2])*int(cart[item][4])
+        subtotal += float(cart[item][2])*int(cart[item][4]) # Price*Quantity
     total = round(subtotal*1.13,2)
     tax = total-subtotal
 
@@ -196,8 +196,8 @@ def cart_confirmation(request, p_id):
     except Product.DoesNotExist:
         raise Http404("Invalid product selection")
 
-    related_products = Category.objects.get(sex=product.category.sex, name=product.category.name).product_set.all().exclude(id=p_id)
-    related_products = related_products[:5]
+    related_products = Category.objects.get(sex=product.category.sex, name=product.category.name).product_set.all().exclude(id=p_id) # get all products will the same category
+    related_products = related_products[:9] # split all those items by first 9
     context = {'product': product,
                'p_list':related_products,}
     context.update(cat_context)
