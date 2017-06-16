@@ -9,7 +9,7 @@ class Command(BaseCommand):
         try:
             num = input("Enter number of *random* items to populate database: ")
         except:
-            sys.exit('input requires an integer value [0-9]')
+            sys.exit('input requires an integer value')
         confirm = raw_input("Are you sure you would like to populate the database? [y/n]: ")
         if confirm == 'y':
             charset = 'abcdefghijklmnopqrstuvxyz '
@@ -22,7 +22,7 @@ class Command(BaseCommand):
                 category_id = random.randint(2,17)
                 price = random.uniform(10.00, 150.00)
                 price = float("{0:.2f}".format(price))
-                if category_id != 10 and category_id != 7 and category_id != 5:
+                if category_id != 10 and category_id != 7 and category_id != 5: # Remove category IDs that are not in our database otherwise things go to shit
                     p = Product(name=name, stockXL=stockXL, stockL=stockL, stockM=stockM, stockS=stockS, category_id=category_id, price=price)
                     p.save()
         elif confirm == 'n':

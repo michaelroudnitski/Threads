@@ -2,11 +2,12 @@ from django.conf.urls import include, url
 from . import views
 
 app_name = 'catalog'
-# r'^(?P<selection>[\w-]+)/$' is a *regular expression* looking for string values
+# r'^(?P<selection>[\w-]+)/$' is a *regular expression* looking for string variables
+# The ones with [0-9] are integerss
 urlpatterns = [
 
     url(r'^catalog/', include([
-
+        # INDEX IS ALWAYS THE MAIN/HOME PAGE FOR AN APP
         url(r'^$', views.index, name='index'),
 
         # MENS/WOMENS CATEGORY SELECTION PAGE

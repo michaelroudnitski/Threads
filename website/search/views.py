@@ -46,13 +46,14 @@ def search(request, sex='mw', category='all_products', size='all_size', order='n
     if request.method == 'GET':  # If the form is submitted
         if search_query: # If search query is not empty
             if str(search_query) not in "1234567890": # If the search query is not entirely composed of integers
-                keywords = search_query.split()
-                queryset_list = queryset_list.filter(
+                keywords = search_query.split() # Split each word in the search query
+                queryset_list = queryset_list.filter(   # This is the actual searching part, find more info online
                     reduce(operator.or_,
                            (Q(name__icontains=keyword) for keyword in keywords)) |
                     reduce(operator.and_,
                            (Q(category__name__icontains=keyword) for keyword in keywords))
-                )
+                )  # You can improve upon this by changing the way this function takes arguements and_
+                   # adding *chain filters* to replace the if statements above
 
             else: # The search query is entirely composed of integers - find item by id
                 queryset_list = queryset_list.filter(id=int(search_query))
@@ -63,7 +64,7 @@ def search(request, sex='mw', category='all_products', size='all_size', order='n
         if len(new_queryset_list) !=0:
             queryset_list = new_queryset_list
 
-
+        # This is just Django's built in paginator
         paginator = Paginator(queryset_list, 10)
         try:
             products = paginator.page(page)
@@ -98,6 +99,7 @@ def search(request, sex='mw', category='all_products', size='all_size', order='n
                    'order_type': order_type,
                    'categories': sorted(set(available_categories)),
                    'sizes': available_sizes}
-        context.update(cat_context)
+        context.update(cat_context) # This line updates each page to know the contents of the categories table
+                                    # So we can have our dropdowns
 
         return render(request, 'search/search_info.html', context)
