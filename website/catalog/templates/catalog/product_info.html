@@ -36,25 +36,25 @@
                 <h4>$ {{ product.price }}</h4>
                 {% endif %}
                 <div class="well">{{product.description}}</div>
-                <form method="post">
-                    {% csrf_token %}
-                    <select name="size_selection">
-                        {% if product.stockXL > 0 %}
-                            <option value="XL">XL</option>
-                        {% endif %}
-                        {% if product.stockL > 0 %}
-                            <option value="L">L</option>
-                        {% endif %}
-                        {% if product.stockM > 0 %}
-                            <option value="M">M</option>
-                        {% endif %}
-                        {% if product.stockS > 0 %}
-                            <option value="S">S</option>
-                        {% endif %}
-                    </select>
-                    <input type="number" name="quantity" min="1" max="12" value=1>
-                    <input type="submit" name="add_to_cart" class="btn btn-success" onclick="alert('Item added to cart!')" value="Add to Cart"></td>
-                </form>
+                {% if product.stockXL > 0 or product.stockL > 0 or product.stockM > 0 or product.stockS > 0 %}
+                    <form method="post">
+                        {% csrf_token %}
+                        <select name="size_selection">
+                            {% if product.stockXL > 0 %}<option value="XL">XL</option>{% endif %}
+                            {% if product.stockL > 0 %}<option value="L">L</option>{% endif %}
+                            {% if product.stockM > 0 %}
+                                <option value="M">M</option>
+                            {% endif %}
+                            {% if product.stockS > 0 %}
+                                <option value="S">S</option>
+                            {% endif %}
+                        </select>
+                        <input type="number" name="quantity" min="1" max="12" value=1 style="width:50px;">
+                        <input type="submit" name="add_to_cart" class="btn btn-success" value="Add to Cart">
+                    </form>
+                {% else %}
+                    <b>Out of Stock</b>
+                {% endif %}
             </div>
             <div class="col-md-2">
                 RELATED PRODUCTS
@@ -77,7 +77,6 @@
                         {% endfor %}
                     </tbody>
                 </table>
-
             </div>
         </div>
     </div>
