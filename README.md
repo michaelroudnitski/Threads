@@ -22,6 +22,10 @@ If you wish to run the server and be able to browse the webpage, you must downlo
 ### This project includes a make-shift data seeder for testing how the site handles larger data under the directory "Threads/website/catalog/management/commands/dbseed.py"
 
 ## Additional Notes for Future Teams
-Our team worked hard to learn Django in the short amount of time we had while still finishing all the features we originally set out to implement. Although we managed to finish and polish those key features, we left a few features like ratings, user shipping destinations and a properly implemented featured section unfinished due to time constraints. We wish you luck with your project and hope you can add even more cool stuff to the site! 
+Our team worked hard to learn Django in the short amount of time we had while still finishing all the features we originally set out to implement. Although we managed to finish and polish those key features, we left a few features like ratings, user shipping destinations and a properly implemented featured section unfinished due to time constraints. Feel free to push to the master branch and create a branch for your team once you have finished so it isn't altered by future groups.
+
+As the host of the repository, you can email michaelroudnitski@gmail.com should there be any concerns with the Github.
+
+We wish you luck with your project and hope you can add even more cool stuff to the site! 
 
 Bonus points if you can think of a better name than Cliffs.
