@@ -8,7 +8,7 @@ Please note that this project was not created with order processing in mind and 
 ## Some Screenshots
 ![Home Page](http://i.imgur.com/tIrJdQY.jpg "Home Page")
 ![Search Page](http://i.imgur.com/oxjj6Ym.jpg "Search Page")
-![Product Page](https://imgur.com/a/MeMJS "Product Page")
+![Product Page](https://i.imgur.com/HsI9z70.png "Product Page")
 ![Item Added to Cart Page](http://i.imgur.com/hpDI5vV.jpg "Item Added to Cart Page")
 ![Cart Page](http://i.imgur.com/bTtg1Pm.jpg "Cart Page")
 
